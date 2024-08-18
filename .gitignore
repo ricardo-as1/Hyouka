@@ -1,3 +1,6 @@
 # Arquivo de configuração geral do bot.
 botconfig.js
 package-lock.json
+
+#Configurações para o README.MD do bot
+.github

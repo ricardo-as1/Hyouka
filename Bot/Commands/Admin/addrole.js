@@ -24,21 +24,23 @@ module.exports = {
   description: "Adiciona um cargo a um membro",
   category: "Admin",
   usage: "h!addrole <membro> <cargo>",
-  args: true,
+  args: false,
+  cooldown: 10,
   aliases: ['adicionarcargo'],
   permission: ["ADMINISTRATOR"],
 
-  run: async (client, message, args) => {
+  run: async (client, message) => {
     const member = message.mentions.members.first();
     const role = message.mentions.roles.first();
+    const guildIconURL = message.guild?.iconURL({ dynamic: true }) || client.user.displayAvatarURL();
 
     if (!member) {
       const embed = new EmbedBuilder()
         .setTitle("<:CheckIncorrect:1272975727821590561> - Erro")
         .setDescription(`${message.author.toString()} Mencione um membro válido por favor.`)
         .setColor(EmbedColor.defaultErrorColor)
-        .setFooter({ text: `${message.author.tag}`, iconURL: message.author.displayAvatarURL({ dynamic: true }) })
-        .setTimestamp();
+        .setFooter({ text: `${message.guild.name}`, iconURL: guildIconURL })
+        .setTimestamp()
 
       return message.channel.send({ embeds: [embed] });
     }
@@ -48,8 +50,8 @@ module.exports = {
         .setTitle("<:CheckIncorrect:1272975727821590561> - Erro")
         .setDescription(`${message.author.toString()} Mencione um cargo válido por favor.`)
         .setColor(EmbedColor.defaultErrorColor)
-        .setFooter({ text: `${message.author.tag}`, iconURL: message.author.displayAvatarURL({ dynamic: true }) })
-        .setTimestamp();
+        .setFooter({ text: `${message.guild.name}`, iconURL: guildIconURL })
+        .setTimestamp()
 
       return message.channel.send({ embeds: [embed] });
     }
@@ -63,8 +65,8 @@ module.exports = {
                         <:Iconmembers:1272933730121547786> - **Membro:** ${member.toString()}
                         <:Attention:1272975741557936209> - __Para remover o cargo, use: **${default_prefix}removerole**.__`)
         .setColor(EmbedColor.defaultSuccessColor)
-        .setFooter({ text: `${message.author.tag}`, iconURL: message.author.displayAvatarURL({ dynamic: true }) })
-        .setTimestamp();
+        .setFooter({ text: `${message.guild.name}`, iconURL: guildIconURL })
+        .setTimestamp()
 
       message.channel.send({ embeds: [successEmbed] });
     } catch (error) {
@@ -72,8 +74,8 @@ module.exports = {
         .setTitle("<:CheckIncorrect:1272975727821590561> - Erro")
         .setDescription(`${message.author.toString()} Desculpe, ocorreu um erro ao tentar adicionar o cargo: ${error.message}`)
         .setColor(EmbedColor.defaultErrorColor)
-        .setFooter({ text: `${message.author.tag}`, iconURL: message.author.displayAvatarURL({ dynamic: true }) })
-        .setTimestamp();
+        .setFooter({ text: `${message.guild.name}`, iconURL: guildIconURL })
+        .setTimestamp()
 
       message.channel.send({ embeds: [errorEmbed] });
     }

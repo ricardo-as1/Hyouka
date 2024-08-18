@@ -23,6 +23,8 @@ const client = new Discord.Client({
   ]
 });
 
+client.messages = {};
+
 
 process.on('uncaughtException', (error) => {
   console.error('⭕・Erro não capturado:', error);

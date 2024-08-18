@@ -1,22 +1,8 @@
-/**
- * @AUTHOR
- * Name | @ricardo-as1
- * Instagram | https://www.instagram.com/kingzin.021/
- * GitHub | https://github.com/ricardo-as1
- * 
- * @INFORMAÇÕES_DO_BOT
- * Name | Hyouka
- * Description | Um bot de moderação e diversão para servidores do Discord.
- * 
- * @LINKS 
- * Repository | https://github.com/ricardo-as1/Hyouka.git
- * Support Server | https://discord.gg/QxQUZbv7df
- */
-
 const chalk = require('chalk');
 const fs = require('fs');
 const path = require('path');
 const { Collection } = require('discord.js');
+const { getPrefix } = require('../Config/Database/database'); // Importando a função getPrefix
 const default_prefix = require('../Config/botconfig.js').default_prefix;
 const { getFormattedDate } = require('../Config/TimeString');
 
@@ -26,29 +12,37 @@ const white = chalk.white;
 
 // Função para carregar eventos
 const loadEvents = (client) => {
-  const eventsPath = path.join(__dirname, '../events');
+  if (client.eventsLoaded) return; // Evita carregar eventos mais de uma vez
+
+  const eventsPath = path.join(__dirname, '../Events');
   console.log(chalk.greenBright('✔ EVENTOS CARREGADOS:'));
 
   const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.js'));
   const formattedEventFiles = eventFiles.map(file => `${getFormattedDate()} - ${white(file)}`).join('\n');
   console.log(orange(formattedEventFiles));
 
-  for (const file of eventFiles) {
+  eventFiles.forEach(file => {
     const event = require(path.join(eventsPath, file));
-    if (event.once) {
-      client.once(event.name, (...args) => event.execute(...args, client));
-    } else {
-      client.on(event.name, (...args) => event.execute(...args, client));
+    if (event.name && typeof event.execute === 'function') {
+      if (event.once) {
+        client.once(event.name, (...args) => event.execute(...args, client));
+      } else {
+        client.on(event.name, (...args) => event.execute(...args, client));
+      }
     }
-  }
+  });
+
+  client.eventsLoaded = true; // Marca que os eventos foram carregados
 };
 
 // Função para carregar comandos
 const loadCommands = (client) => {
+  if (client.commandsLoaded) return; // Evita carregar comandos mais de uma vez
+
   client.commands = new Collection();
   client.aliases = new Collection();
 
-  const commandsPath = path.join(__dirname, '../commands');
+  const commandsPath = path.join(__dirname, '../Commands');
   console.log(chalk.greenBright('✔ COMANDOS CARREGADOS:'));
 
   if (!fs.existsSync(commandsPath)) {
@@ -82,38 +76,42 @@ const loadCommands = (client) => {
     });
   });
 
-  // Listener para mensagens
-  client.on("messageCreate", async (message) => {
-    const prefix = default_prefix;
+  client.commandsLoaded = true; // Marca que os comandos foram carregados
+};
 
-    if (message.author.bot || message.channel.type === 'DM') return;
+// Listener para mensagens
+const handleMessage = async (message, client) => {
+  if (message.author.bot || message.channel.type === 'DM') return;
 
-    if (!message.content.toLowerCase().startsWith(prefix.toLowerCase())) return;
+  // Obter o prefixo do banco de dados ou usar o padrão
+  const prefix = await getPrefix(message.guild.id) || default_prefix;
 
-    const args = message.content.slice(prefix.length).trim().split(/ +/g);
-    const cmd = args.shift().toLowerCase();
+  // Verificar se a mensagem começa com o prefixo
+  if (!message.content.toLowerCase().startsWith(prefix.toLowerCase())) return;
 
-    if (cmd.length === 0) return;
+  const args = message.content.slice(prefix.length).trim().split(/ +/g);
+  const cmd = args.shift().toLowerCase();
 
-    let command = client.commands.get(cmd);
-    if (!command) command = client.commands.get(client.aliases.get(cmd));
+  if (cmd.length === 0) return;
 
-    if (command) {
-      try {
-        command.run(client, message, args);
-      } catch (err) {
-        console.error(chalk.red('💥 | Erro ao executar o comando:'), err);
-      }
-    } else {
-      console.warn(chalk.yellow(`⚠️ | Comando não encontrado: ${cmd}`));
+  let command = client.commands.get(cmd);
+  if (!command) command = client.commands.get(client.aliases.get(cmd));
+
+  if (command) {
+    try {
+      await command.run(client, message, args);
+    } catch (err) {
+      console.error(chalk.red('💥 | Erro ao executar o comando:'), err);
     }
-  });
+  } else {
+    console.warn(chalk.yellow(`⚠️ | Comando não encontrado: ${cmd}`));
+  }
 };
 
 // Função para carregar eventos e comandos
 const loadAll = (client) => {
   loadEvents(client);
   loadCommands(client);
-};
+}
 
 module.exports = loadAll;

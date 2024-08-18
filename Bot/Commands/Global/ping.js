@@ -25,24 +25,25 @@ module.exports = {
   description: "Mostra o ping do bot e inclui um botão para atualizar.",
   category: "Global",
   usage: "h!ping",
+  cooldown: 10,
   args: false,
-  aliases: ['p'],
+  aliases: ['pong', 'latency'],
   permission: [],
 
   /**
    * @param {import('discord.js').Message} message
-   * @param {string[]} args
    * @param {import('discord.js').Client} client
-   * @param {string} prefix
    */
   
-  run: async (client, message, args, prefix) => {
+  run: async (client, message) => {
     // Função para calcular o API Ping
     const calculateApiPing = async () => {
       const start = Date.now();
       await message.channel.sendTyping(); // Simula uma ação de digitação
       return Date.now() - start;
     };
+
+    const guildIconURL = message.guild?.iconURL({ dynamic: true }) || client.user.displayAvatarURL();
 
     // Função para calcular o Gateway Ping
     const calculateGatewayPing = async () => {
@@ -63,8 +64,8 @@ module.exports = {
           **API Ping :** \`${apiPing}ms\`
           `)
         .setColor(EmbedColor.defaultEmbedColor)
-        .setFooter({ text: `${message.author.tag}`, iconURL: message.author.displayAvatarURL({ dynamic: true }) })
-        .setTimestamp();
+        .setFooter({ text: `${message.guild.name}`, iconURL: guildIconURL })
+        .setTimestamp()
     };
 
     // Função para criar a linha de ações com o botão
