@@ -1,3 +1,16 @@
+/**
+ * @AUTHOR
+ * Name | @ricardo-as1
+ * Instagram | https://www.instagram.com/kingzin.021/
+ * GitHub | https://github.com/ricardo-as1
+ * @INFORMAÇÕES_DO_BOT
+ * Name | Hyouka
+ * Description | Um bot de moderação e diversão para servidores do Discord.
+ * @LINKS 
+ * Repository | (https://github.com/ricardo-as1/Hyouka.git)
+ * Support Server | (https://discord.gg/HKkHaqPNac)
+ */
+
 const { setCooldown, isInCooldown } = require('../Config/CooldownManager'); // Caminho para o novo arquivo
 const { EmbedBuilder } = require('discord.js');
 const { getPrefix } = require('../Config/Database/database');

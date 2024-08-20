@@ -8,7 +8,7 @@
  * Description | Um bot de moderação e diversão para servidores do Discord.
  * @LINKS
  * Repository | (https://github.com/ricardo-as1/Hyouka.git)
- * Support Server | (https://discord.gg/QxQUZbv7df)
+ * Support Server | (https://discord.gg/HKkHaqPNac)
  **/
 
 /**
@@ -27,7 +27,7 @@ module.exports = {
   usage: "resetprefix",
   args: false,
   cooldown: 10,
-  category: "Config",
+  category: "Information",
   permission: ["MANAGE_GUILD"],
 
   async run(client, message, args) {
