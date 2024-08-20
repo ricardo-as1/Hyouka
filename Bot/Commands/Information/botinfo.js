@@ -3,10 +3,6 @@
  * Name | @ricardo-as1
  * Instagram | https://www.instagram.com/kingzin.021/
  * GitHub | https://github.com/ricardo-as1
- * @INFORMAÇÕES_DO_BOT
- * Name | Hyouka
- * Description | Um bot de moderação e diversão para servidores do Discord.
- * @LINKS 
  * Repository | (https://github.com/ricardo-as1/Hyouka.git)
  * Support Server | (https://discord.gg/HKkHaqPNac)
  */
@@ -25,14 +21,13 @@ module.exports = {
   description: "Mostra as informações do bot.",
   category: "Information",
   usage: "h!botinfo",
-  args: false,
   cooldown: 10,
   aliases: ['infobot', 'binfo', 'info'],
-  permission: [],
 
   /**
    * @param {import('discord.js').Message} message
    * @param {import('discord.js').Client} client
+   * @param {Array<string>} args
    */
 
   run: async (client, message) => {
@@ -77,25 +72,6 @@ module.exports = {
       .setFooter({ text: `${message.guild.name}`, iconURL: guildIconURL })
       .setTimestamp()
 
-    /*     const Invite = new ActionRowBuilder()
-          .addComponents(
-            new ButtonBuilder()
-              .setLabel('Adicionar o Bot')
-              .setEmoji('<:link:1272933854260367483>')
-              .setURL(`https://discord.com/api/oauth2/authorize?client_id=${client.user.id}&permissions=8&scope=bot%20applications.commands`)
-              .setStyle(ButtonStyle.Link)
-          );
-        const SupportServer = new ActionRowBuilder()
-          .addComponents(
-            new ButtonBuilder()
-              .setLabel('Servidor de Suporte')
-              .setEmoji('<:link:1272933854260367483>')
-              .setURL('https://discord.gg/HKkHaqPNac')
-              .setStyle(ButtonStyle.Link)
-          ); */
-
-    // Se preferir usar botoes, descomente as linhas acima e descomente as linhas abaixo e retire as duas ultimas linhas de .addFields()
-
-    return message.channel.send({ embeds: [Botinfo] /* , components: [Invite, SupportServer] */ });
+    return message.channel.send({ embeds: [Botinfo] });
   }
 }

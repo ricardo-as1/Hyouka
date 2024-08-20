@@ -3,10 +3,6 @@
  * Name | @ricardo-as1
  * Instagram | https://www.instagram.com/kingzin.021/
  * GitHub | https://github.com/ricardo-as1
- * @INFORMAÇÕES_DO_BOT
- * Name | Hyouka
- * Description | Um bot de moderação e diversão para servidores do Discord.
- * @LINKS 
  * Repository | (https://github.com/ricardo-as1/Hyouka.git)
  * Support Server | (https://discord.gg/HKkHaqPNac)
  */
@@ -24,9 +20,8 @@ module.exports = {
   description: "Define um novo prefixo para o servidor.",
   aliases: ['prefix', 'changeprefix'],
   usage: "h!setprefix <prefix>",
-  args: true,
   cooldown: 10,
-  category: "Information",
+  category: "Admin",
   permission: ["MANAGE_GUILD"],
 
   /**
@@ -51,7 +46,7 @@ module.exports = {
         .setFooter({ text: `${message.guild.name}`, iconURL: guildIconURL })
         .setTimestamp();
 
-      return message.reply({ embeds: [embed] });
+      return message.channel.send({ embeds: [embed] });
     }
 
     const newPrefix = args[0];
@@ -63,11 +58,11 @@ module.exports = {
         .setFooter({ text: `${message.guild.name}`, iconURL: guildIconURL })
         .setTimestamp();
 
-      return message.reply({ embeds: [PrefixEmbed] });
+      return message.channel.send({ embeds: [PrefixEmbed] });
     }
 
     try {
-      await setPrefix(message.guild.id, newPrefix);  // Certifique-se de que `setPrefix` é uma Promise
+      setPrefix(message.guild.id, newPrefix);  // Certifique-se de que `setPrefix` é uma Promise
 
       const SuccessEmbed = new EmbedBuilder()
         .setTitle(`<:Lootbox:1273392541319827469> Sucesso`)
@@ -76,7 +71,7 @@ module.exports = {
         .setFooter({ text: `${message.guild.name}`, iconURL: guildIconURL })
         .setTimestamp();
 
-      return message.reply({ embeds: [SuccessEmbed] });
+      return message.channel.send({ embeds: [SuccessEmbed] });
     } catch (error) {
       console.error("Erro ao definir o prefixo:", error);
       const errorEmbed = new EmbedBuilder()
@@ -86,7 +81,7 @@ module.exports = {
         .setFooter({ text: `${message.guild.name}`, iconURL: guildIconURL })
         .setTimestamp();
 
-      return message.reply({ embeds: [errorEmbed] });
+      return message.channel.send({ embeds: [errorEmbed] });
     }
   }
 };

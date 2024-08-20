@@ -3,10 +3,6 @@
  * Name | @ricardo-as1
  * Instagram | https://www.instagram.com/kingzin.021/
  * GitHub | https://github.com/ricardo-as1
- * @INFORMAÇÕES_DO_BOT
- * Name | Hyouka
- * Description | Um bot de moderação e diversão para servidores do Discord.
- * @LINKS 
  * Repository | (https://github.com/ricardo-as1/Hyouka.git)
  * Support Server | (https://discord.gg/HKkHaqPNac)
  */
@@ -24,26 +20,22 @@ module.exports = {
   category: "Global",
   usage: "h!ping",
   cooldown: 10,
-  args: false,
   aliases: ['pong', 'latency'],
-  permission: [],
 
   /**
    * @param {import('discord.js').Message} message
    * @param {import('discord.js').Client} client
+   * @param {Array<string>} args
    */
   
   run: async (client, message) => {
-    // Função para calcular o API Ping
     const calculateApiPing = async () => {
       const start = Date.now();
-      await message.channel.sendTyping(); // Simula uma ação de digitação
+      // await message.channel.sendTyping(); // Simula uma ação de digitação
       return Date.now() - start;
     };
 
     const guildIconURL = message.guild?.iconURL({ dynamic: true }) || client.user.displayAvatarURL();
-
-    // Função para calcular o Gateway Ping
     const calculateGatewayPing = async () => {
       const start = Date.now();
       const ping = client.ws.ping;
@@ -51,7 +43,6 @@ module.exports = {
       return ping || end - start;
     };
 
-    // Função para criar o embed com o Gateway Ping e API Ping
     const createPingEmbed = async () => {
       const apiPing = await calculateApiPing();
       const gatewayPing = await calculateGatewayPing();
@@ -66,7 +57,6 @@ module.exports = {
         .setTimestamp()
     };
 
-    // Função para criar a linha de ações com o botão
     const createActionRow = () => {
       return new ActionRowBuilder()
         .addComponents(
@@ -78,15 +68,13 @@ module.exports = {
         );
     };
 
-    // Envia a mensagem inicial com o embed e o botão
     const sentMessage = await message.channel.send({
       embeds: [await createPingEmbed()],
       components: [createActionRow()]
     });
 
-    // Cria um coletor de interação para o botão
     const filter = i => i.customId === 'ping_refresh' && i.user.id === message.author.id;
-    const collector = message.channel.createMessageComponentCollector({ filter, time: 60000 }); // 60 segundos
+    const collector = message.channel.createMessageComponentCollector({ filter, time: 60000 });
 
     collector.on('collect', async interaction => {
       await interaction.deferUpdate();
@@ -100,7 +88,7 @@ module.exports = {
 
     collector.on('end', collected => {
       sentMessage.edit({
-        components: [] // Remove os botões após o tempo limite
+        components: []
       });
     });
   }

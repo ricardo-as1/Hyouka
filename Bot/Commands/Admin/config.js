@@ -3,10 +3,6 @@
  * Name | @ricardo-as1
  * Instagram | https://www.instagram.com/kingzin.021/
  * GitHub | https://github.com/ricardo-as1
- * @INFORMAÇÕES_DO_BOT
- * Name | Hyouka
- * Description | Um bot de moderação e diversão para servidores do Discord.
- * @LINKS 
  * Repository | (https://github.com/ricardo-as1/Hyouka.git)
  * Support Server | (https://discord.gg/HKkHaqPNac)
  */
@@ -17,24 +13,24 @@
  */
 
 const { EmbedBuilder } = require('discord.js');
-const defaultPrefix = require("../../Config/botconfig.js").default_prefix;
 
 module.exports = {
   name: "config",
   description: "Exibe informações de configuração do bot e permite alterar o prefixo.",
-  category: "Information",
+  category: "Admin",
   usage: "h!config",
   cooldown: 10,
-  args: false,
-  aliases: [],
   permission: ["ADMINISTRATOR"],
 
   /**
    * @param {import('discord.js').Message} message
    * @param {import('discord.js').Client} client
+   * @param {Array<string>} args
    */
 
   run: async (client, message) => {
+    const guildIconURL = message.guild.iconURL({ dynamic: true }) || client.user.displayAvatarURL();
+
     const embed = new EmbedBuilder()
       .setTitle("<a:Settings:1273392456125386883> Hyouka - Configuração")
       .addFields({ 
@@ -43,11 +39,8 @@ module.exports = {
           inline: false
         })
       .setColor("#7289DA")
-      .setFooter({ 
-        text: `${message.guild.name}`,
-        iconURL: message.guild.iconURL({ dynamic: true }) 
-      })
-      .setTimestamp();
+      .setFooter({ text: `${message.guild.name}`, iconURL: guildIconURL })
+      .setTimestamp()
 
     await message.channel.send({ embeds: [embed]});
   }

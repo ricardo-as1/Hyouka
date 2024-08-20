@@ -3,13 +3,9 @@
  * Name | @ricardo-as1
  * Instagram | https://www.instagram.com/kingzin.021/
  * GitHub | https://github.com/ricardo-as1
- * @INFORMAÇÕES_DO_BOT
- * Name | Hyouka
- * Description | Um bot de moderação e diversão para servidores do Discord.
- * @LINKS
  * Repository | (https://github.com/ricardo-as1/Hyouka.git)
  * Support Server | (https://discord.gg/HKkHaqPNac)
- **/
+ */
 
 /**
  * @type {import("../../Config/BaseCommands")}
@@ -25,35 +21,33 @@ module.exports = {
   description: "Reseta o prefixo para o padrão.",
   aliases: ['prefixreset'],
   usage: "resetprefix",
-  args: false,
   cooldown: 10,
-  category: "Information",
+  category: "Admin",
   permission: ["MANAGE_GUILD"],
 
-  async run(client, message, args) {
-    // Verifica se o usuário tem permissão para executar o comando
+  async run(client, message) {
+    const guildIconURL = message.guild.iconURL({ dynamic: true }) || client.user.displayAvatarURL();
+
     if (!message.member.permissions.has("MANAGE_GUILD")) {
       const noPermissionEmbed = new EmbedBuilder()
-        .setTitle(`❌ **${message.author.username}**`)
+        .setTitle(`<:CheckIncorrect:1272975727821590561> **${message.author.username}**`)
         .setColor(EmbedColor.defaultErrorColor)
-        .setDescription(`Você não tem permissão para resetar o prefixo.`)
+        .setDescription(`__**${message.author.toString()}, Você não tem permissão para resetar o prefixo.__`)
         .setFooter({ text: `${message.guild.name}`, iconURL: message.guild.iconURL({ dynamic: true }) })
         .setTimestamp();
 
-      return message.reply({ embeds: [noPermissionEmbed] });
+      return message.channel.send({ embeds: [noPermissionEmbed] });
     }
 
-    // Remove o prefixo personalizado do banco de dados
     removePrefix(message.guild.id);
 
-    // Cria uma resposta de sucesso
     const successEmbed = new EmbedBuilder()
-      .setTitle(`🔄 **Prefixo Resetado**`)
+      .setTitle(`<:Lootbox:1273392541319827469> Prefixo Resetado`)
       .setColor(EmbedColor.defaultSuccessColor)
-      .setDescription(`O prefixo foi resetado para o padrão: \`${defaultPrefix}\``)
-      .setFooter({ text: `${message.guild.name}`, iconURL: message.guild.iconURL({ dynamic: true }) })
-      .setTimestamp();
+      .setDescription(`<:Developer:1273392334956007477> **O prefixo foi resetado para o padrão: \`${defaultPrefix}\`**`)
+      .setFooter({ text: `${message.guild.name}`, iconURL: guildIconURL })
+      .setTimestamp()
 
-    return message.reply({ embeds: [successEmbed] });
+    return message.channel.send({ embeds: [successEmbed] });
   }
 };

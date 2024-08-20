@@ -12,7 +12,7 @@
  */
 
 const Database = require('better-sqlite3');
-const db = new Database('bot_prefixes.db');
+const db = new Database('./HyoukaDatabase.db');
 
 const defaultPrefix = require('../botconfig').default_prefix; // Defina aqui o prefixo padrão do bot
 
