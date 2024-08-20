@@ -38,15 +38,6 @@ module.exports = {
     const embed = new EmbedBuilder()
       .setTitle("<a:Settings:1273392456125386883> Hyouka - Configuração")
       .addFields({ 
-          name: "<:Automod:1273403347122126960> Lista de Comandos:", 
-          value: "\`h!help\` **- Mostra a lista de comandos.**",
-          inline: true
-        },
-        {
-          name: "\n",
-          value: "\n",
-        },
-        { 
           name: "<:Lootbox:1273392541319827469> Alterar Prefixo:", 
           value: "\`h!prefix <prefixo>\` **- Altera o prefixo do bot.**",
           inline: false
