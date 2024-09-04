@@ -9,8 +9,13 @@
 
 const Discord = require('discord.js');
 
-const loadAll = require('./Bot/Events/loadAll');
-const { token, default_prefix } = require('./Bot/Config/botconfig.js');
+// Carregando os eventos e comandos
+const loadEvents = require('./Bot/Events/loadEvents.js');
+const loadCommands = require('./Bot/Events/loadCommands.js');
+
+// Carregando o bot
+const { token } = require('./Bot/Config/botconfig.js');
+
 const client = new Discord.Client({
   intents: [
     Discord.GatewayIntentBits.Guilds,
@@ -21,17 +26,15 @@ const client = new Discord.Client({
 
 client.messages = {};
 
-
 process.on('uncaughtException', (error) => {
   console.error('⭕・Erro não capturado:', error);
-  // Tente fazer log do erro e, se necessário, notificar o dono do bot
 });
 
 process.on('unhandledRejection', (reason, promise) => {
   console.error('⭕・Promessa rejeitada:', promise, '🔴・Razão:', reason);
-  // Tente fazer log do erro e, se necessário, notificar o dono do bot
 });
 
-loadAll(client);
+loadEvents(client);
+loadCommands(client);
 
 client.login(token)

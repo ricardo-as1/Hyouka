@@ -12,12 +12,12 @@
  */
 
 const { EmbedBuilder } = require("discord.js");
-const { defaultEmbedColor } = require("../../Config/colors");
+const { defaultEmbedColor } = require("../../Config/colors.js");
 
 module.exports = {
   name: "avatar",
   description: "Mostra informações de avatar dos usuários.",
-  category: "Information",
+  category: "Global",
   usage: "h!avatar @user",
   cooldown: 10,
   aliases: ["av"],

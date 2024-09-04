@@ -11,7 +11,7 @@
  * @type {import("../../Config/BaseCommands.js")}
  */
 
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const { getPrefix } = require('../../Config/Database/database.js');
 const EmbedColor = require('../../Config/colors.js');
 const defaultPrefix = require('../../Config/botconfig.js').default_prefix;
@@ -19,10 +19,10 @@ const defaultPrefix = require('../../Config/botconfig.js').default_prefix;
 module.exports = {
   name: "botinfo",
   description: "Mostra as informações do bot.",
-  category: "Information",
+  category: "Global",
   usage: "h!botinfo",
   cooldown: 10,
-  aliases: ['infobot', 'binfo', 'info'],
+  aliases: ['infobot', 'binfo', 'info', 'stats'],
 
   /**
    * @param {import('discord.js').Message} message
@@ -61,7 +61,7 @@ module.exports = {
         { name: '<:Developer:1273392334956007477> Prefixo:', value: `┕\`${currentPrefix}\``, inline: true },
         { name: '<:Diamon:1273404820325273673> Uptime:', value: `┕\`${formatUptime(client.uptime)}\``, inline: true },
         { name: '<:djs:1274733473109639290> Discord.js', value: `┕\`${require('discord.js').version}\``, inline: true },
-        { name: '<:nodejs:1274733514335719475> Node.js', value: `┕\`${process.version}\``, inline: true },
+        { name: '<:Nodejs:1277804898863546389> Node.js', value: `┕\`${process.version}\``, inline: true },
         { name: '<:Cardboard:1274739734333362236> RAM', value: `┕\`${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB\``, inline: true },
         { name: ' ', value: `<:Online:1272932938929012847>  [Add to Server](https://discord.com/api/oauth2/authorize?client_id=${client.user.id}&permissions=8&scope=bot%20applications.commands)`, inline: true },
         { name: ' ', value: `<:Online:1272932938929012847>  [Support Server](https://discord.gg/HKkHaqPNac)`, inline: true },

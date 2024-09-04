@@ -47,7 +47,7 @@ module.exports = {
       const apiPing = await calculateApiPing();
       const gatewayPing = await calculateGatewayPing();
       return new EmbedBuilder()
-        .setTitle('<:ItemPong:1272932557113135114> **Meu ping é:**')
+        .setAuthor({ name: `MEU PING É:`, iconURL: client.user.displayAvatarURL() })
         .setDescription(`
           **Gateway Ping :** \`${gatewayPing}ms\`
           **API Ping :** \`${apiPing}ms\`

@@ -1,4 +1,4 @@
 # Arquivo de configuração geral do bot.
 botconfig.js
 package-lock.json
-bot_prefixes.db
+node_modules
