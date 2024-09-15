@@ -1,19 +1,19 @@
 /**
- * @AUTHOR
- * Name | @ricardo-as1
- * Instagram | https://www.instagram.com/kingzin.021/
- * GitHub | https://github.com/ricardo-as1
- * Repository | (https://github.com/ricardo-as1/Hyouka.git)
- * Support Server | (https://discord.gg/HKkHaqPNac)
+ * @author ricardo-as1
+ * @instagram https://www.instagram.com/kingzin.021/
+ * @github https://github.com/ricardo-as1
+ * @repository https://github.com/ricardo-as1/Hyouka.git
+ * @server_support https://discord.gg/HKkHaqPNac
  */
 
+const { notifyDatabaseStarted } = require('../Database/DataBase.js');
+const { default_prefix } = require("../Config/BotConfig.js");
 const { ActivityType } = require("discord.js");
+const { ChalkBlue } = require("../Config/Colors");
 const chalk = require("chalk");
-const { default_prefix } = require("../Config/botconfig");
-const { notifyDatabaseStarted } = require('../Config/Database/database');
 
 module.exports = { 
-  name: "ready",
+  name: "Ready",
   once: true,
   async execute(client) {
 
@@ -48,7 +48,7 @@ module.exports = {
     updatePresence();
 
     function printSeparator() {
-      console.log(chalk.hex("#5865F2")("═".repeat(process.stdout.columns)));
+      console.log(chalk.hex(ChalkBlue)("═".repeat(process.stdout.columns)));
     }
 
     printSeparator();
@@ -59,22 +59,22 @@ module.exports = {
     const Database = notifyDatabaseStarted();
 
     console.group(chalk.greenBright.bold.italic('✔ Database Status'));
-    console.log(chalk.white.italic("🗃️"), chalk.hex("#5865F2").underline.italic(`${Database}`));
+    console.log(chalk.white.italic("🗃️"), chalk.hex(ChalkBlue).underline.italic(`${Database}`));
     console.groupEnd();
 
     console.log('');
 
     console.group(chalk.greenBright.bold.italic(`✔ BOT STATUS`));
-    console.log(('🤖 ') + chalk.hex("#5865F2").underline.italic("Logado como:"), chalk.white.italic(client.user.tag));
-    console.log(('🆔 ') + chalk.hex("#5865F2").underline.italic("Id do bot:"), chalk.white.italic(client.user.id));
-    console.log(('🟢') + chalk.hex("#5865F2").underline.italic("Atual status:"), chalk.green.italic(client.user.presence.status));
+    console.log(('🤖 ') + chalk.hex(ChalkBlue).underline.italic("Logado como:"), chalk.white.italic(client.user.tag));
+    console.log(('🆔 ') + chalk.hex(ChalkBlue).underline.italic("Id do bot:"), chalk.white.italic(client.user.id));
+    console.log(('🟢') + chalk.hex(ChalkBlue).underline.italic("Atual status:"), chalk.green.italic(client.user.presence.status));
     console.groupEnd();
 
     console.log('');
 
     console.group(chalk.greenBright.bold.italic('✔ INFORMAÇÕES SOBRE SERVIDORES'));
-    console.log(('🌐 ') + chalk.hex("#5865F2").underline.italic("Servidores:"), chalk.white.italic(serverCount));
-    console.log(('👥 ') + chalk.hex("#5865F2").underline.italic("Usuários:"), chalk.white.italic(userCount));
+    console.log(('🌐 ') + chalk.hex(ChalkBlue).underline.italic("Servidores:"), chalk.white.italic(serverCount));
+    console.log(('👥 ') + chalk.hex(ChalkBlue).underline.italic("Usuários:"), chalk.white.italic(userCount));
     console.groupEnd();
 
     console.log('');
@@ -82,13 +82,13 @@ module.exports = {
     console.group(chalk.greenBright.bold.italic('✔ INFORMAÇÕES DO SISTEMA'));
     console.log(
       "📦",
-      `${chalk.hex("#5865F2").underline.italic("Discord.js")} ${chalk.white.italic(require("discord.js").version)}`,
+      `${chalk.hex(ChalkBlue).underline.italic("Discord.js")} ${chalk.white.italic(require("discord.js").version)}`,
       "/",
       "🌍",
-      `${chalk.hex("#5865F2").underline.italic("NodeJs")} ${chalk.white.italic(process.versions.node)}`,
+      `${chalk.hex(ChalkBlue).underline.italic("NodeJs")} ${chalk.white.italic(process.versions.node)}`,
       "/",
       "⏱️ ",
-      `${chalk.hex("#5865F2").underline.italic("Uptime")} ${chalk.white.italic(uptime + 's')}`,
+      `${chalk.hex(ChalkBlue).underline.italic("Uptime")} ${chalk.white.italic(uptime + 's')}`,
     );
     console.groupEnd();
 

@@ -1,20 +1,20 @@
 /**
- * @AUTHOR
- * Name | @ricardo-as1
- * Instagram | https://www.instagram.com/kingzin.021/
- * GitHub | https://github.com/ricardo-as1
- * Repository | (https://github.com/ricardo-as1/Hyouka.git)
- * Support Server | (https://discord.gg/HKkHaqPNac)
+ * @author ricardo-as1
+ * @instagram https://www.instagram.com/kingzin.021/
+ * @github https://github.com/ricardo-as1
+ * @repository https://github.com/ricardo-as1/Hyouka.git
+ * @server_support https://discord.gg/HKkHaqPNac
  */
 
 /**
- * @type {import("../../Config/BaseCommands")}
+ * Placeholder command
+ * @type {import("../../Config/basecommands.js")}
  */
 
-const EmbedColor = require('../../Config/colors');
-const { removePrefix } = require('../../Config/Database/database');
+const { SuccessEmbedColor, ErrorEmbedColor } = require('../../Config/Colors.js');
+const { default_prefix } = require('../../Config/BotConfig.js');
+const { removePrefix } = require('../../Database/DataBase.js');
 const { EmbedBuilder } = require('discord.js');
-const defaultPrefix = require('../../Config/botconfig').default_prefix;
 
 module.exports = {
   name: "resetprefix",
@@ -31,7 +31,7 @@ module.exports = {
     if (!message.member.permissions.has("MANAGE_GUILD")) {
       const noPermissionEmbed = new EmbedBuilder()
         .setTitle(`<:CheckIncorrect:1272975727821590561> **${message.author.username}**`)
-        .setColor(EmbedColor.defaultErrorColor)
+        .setColor(ErrorEmbedColor)
         .setDescription(`__**${message.author.toString()}, Você não tem permissão para resetar o prefixo.__`)
         .setFooter({ text: `${message.guild.name}`, iconURL: message.guild.iconURL({ dynamic: true }) })
         .setTimestamp();
@@ -43,8 +43,8 @@ module.exports = {
 
     const successEmbed = new EmbedBuilder()
       .setTitle(`<:Lootbox:1273392541319827469> Prefixo Resetado`)
-      .setColor(EmbedColor.defaultSuccessColor)
-      .setDescription(`<:Developer:1273392334956007477> **O prefixo foi resetado para o padrão: \`${defaultPrefix}\`**`)
+      .setColor(SuccessEmbedColor)
+      .setDescription(`<:Developer:1273392334956007477> **O prefixo foi resetado para o padrão: \`${default_prefix}\`**`)
       .setFooter({ text: `${message.guild.name}`, iconURL: guildIconURL })
       .setTimestamp()
 

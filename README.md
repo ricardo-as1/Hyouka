@@ -7,7 +7,7 @@
 
 <div align="center">
 
-![Versão](https://img.shields.io/badge/Versão-0.0.2-blue.svg)
+![Versão](https://img.shields.io/badge/Versão-0.0.6-blue.svg)
 [![Me adicione](https://img.shields.io/badge/Me-Adicione-blue.svg)](https://discord.com/oauth2/authorize?client_id=945037342605975643&permissions=8&integration_type=0&scope=bot)
 ![Status](https://img.shields.io/badge/Status-Development-blue.svg)
 [![License](https://img.shields.io/badge/License-AGPL_3.0-blue.svg)](/LICENSE)

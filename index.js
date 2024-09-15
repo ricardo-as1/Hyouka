@@ -1,20 +1,19 @@
 /**
- * @AUTHOR
- * Name | @ricardo-as1
- * Instagram | https://www.instagram.com/kingzin.021/
- * GitHub | https://github.com/ricardo-as1
- * Repository | (https://github.com/ricardo-as1/Hyouka.git)
- * Support Server | (https://discord.gg/HKkHaqPNac)
+ * @author ricardo-as1
+ * @instagram https://www.instagram.com/kingzin.021/
+ * @github https://github.com/ricardo-as1
+ * @repository https://github.com/ricardo-as1/Hyouka.git
+ * @server_support https://discord.gg/HKkHaqPNac
  */
 
 const Discord = require('discord.js');
 
 // Carregando os eventos e comandos
-const loadEvents = require('./Bot/Events/loadEvents.js');
-const loadCommands = require('./Bot/Events/loadCommands.js');
+const loadEvents = require('./Src/Events/LoadEvents.js');
+const loadCommands = require('./Src/Events/LoadCommands.js');
 
 // Carregando o bot
-const { token } = require('./Bot/Config/botconfig.js');
+const { token } = require('./Src/Config/BotConfig.js');
 
 const client = new Discord.Client({
   intents: [

@@ -1,14 +1,9 @@
 /**
- * @AUTHOR
- * Name | @ricardo-as1
- * Instagram | https://www.instagram.com/kingzin.021/
- * GitHub | https://github.com/ricardo-as1
- * @INFORMAÇÕES_DO_BOT
- * Name | Hyouka
- * Description | Um bot de moderação e diversão para servidores do Discord.
- * @LINKS 
- * Repository | (https://github.com/ricardo-as1/Hyouka.git)
- * Support Server | (https://discord.gg/HKkHaqPNac)
+ * @author ricardo-as1
+ * @instagram https://www.instagram.com/kingzin.021/
+ * @github https://github.com/ricardo-as1
+ * @repository https://github.com/ricardo-as1/Hyouka.git
+ * @server_support https://discord.gg/HKkHaqPNac
  */
 
 const Database = require('better-sqlite3');
@@ -31,7 +26,7 @@ function notifyPrefixAdded(guildId, newPrefix) {
 
 notifyDatabaseStarted(); // Chama a função para exibir a mensagem
 
-const defaultPrefix = require('../botconfig').default_prefix; // Defina aqui o prefixo padrão do bot
+const { default_prefix } = require('../Config/BotConfig.js'); // Defina aqui o prefixo padrão do bot
 
 // Criar uma tabela para prefixos, se não existir
 try {
@@ -44,7 +39,7 @@ try {
 function setPrefix(guildId, newPrefix) {
     try {
         // Não salvar o prefixo se ele for igual ao prefixo padrão
-        if (newPrefix === defaultPrefix) {
+        if (newPrefix === default_prefix) {
             removePrefix(guildId); // Remove o prefixo salvo se ele for redefinido para o padrão
             return;
         }
@@ -61,10 +56,10 @@ function getPrefix(guildId) {
     try {
         const stmt = db.prepare('SELECT prefix FROM prefixes WHERE guildId = ?');
         const row = stmt.get(guildId);
-        return row ? row.prefix : defaultPrefix;  // Retorna o prefixo padrão se não houver prefixo definido
+        return row ? row.prefix : default_prefix;  // Retorna o prefixo padrão se não houver prefixo definido
     } catch (error) {
         notifyError('Falha ao obter o prefixo.');
-        return defaultPrefix;
+        return default_prefix;
     }
 }
 

@@ -1,26 +1,22 @@
 /**
- * @AUTHOR
- * Name | @ricardo-as1
- * Instagram | https://www.instagram.com/kingzin.021/
- * GitHub | https://github.com/ricardo-as1
- * Repository | (https://github.com/ricardo-as1/Hyouka.git)
- * Support Server | (https://discord.gg/HKkHaqPNac)
+ * @author ricardo-as1
+ * @instagram https://www.instagram.com/kingzin.021/
+ * @github https://github.com/ricardo-as1
+ * @repository https://github.com/ricardo-as1/Hyouka.git
+ * @server_support https://discord.gg/HKkHaqPNac
  */
 
+const { ChalkOrange, ChalkWhite } = require('../Config/Colors.js');
 const { getFormattedDate } = require('../Config/TimeString.js');
+const { default_prefix } = require('../Config/BotConfig.js');
 const { Collection } = require('discord.js');
-const { getPrefix } = require('../Config/Database/database.js'); // Importando a função getPrefix
-const default_prefix = require('../Config/botconfig.js').default_prefix;
+const { getPrefix } = require('../Database/DataBase.js');
 const fs = require('fs');
 const path = require('path');
 const chalk = require('chalk');
 
-// Definindo cores
-const orange = chalk.hex('#FFA500');
-const white = chalk.white;
-
 const loadCommands = (client) => {
-  if (client.commandsLoaded) return; // Evita carregar comandos mais de uma vez
+  if (client.commandsLoaded) return;
 
   client.commands = new Collection();
   client.aliases = new Collection();
@@ -45,8 +41,8 @@ const loadCommands = (client) => {
       return;
     }
 
-    const formattedCommandFiles = commandFiles.map(file => `${getFormattedDate()} - ${white(file)}`).join('\n');
-    console.log(orange(formattedCommandFiles));
+    const formattedCommandFiles = commandFiles.map(file => `${getFormattedDate()} - ${chalk.hex(ChalkWhite)(file)}`).join('\n');
+    console.log(chalk.hex(ChalkOrange)(formattedCommandFiles));
 
     commandFiles.forEach(file => {
       const command = require(path.join(categoryPath, file));
@@ -59,17 +55,14 @@ const loadCommands = (client) => {
     });
   });
 
-  client.commandsLoaded = true; // Marca que os comandos foram carregados
+  client.commandsLoaded = true;
 };
 
-// Listener para mensagens
 const handleMessage = async (message, client) => {
   if (message.author.bot || message.channel.type === 'DM') return;
 
-  // Obter o prefixo do banco de dados ou usar o padrão
   const prefix = await getPrefix(message.guild.id) || default_prefix;
 
-  // Verificar se a mensagem começa com o prefixo
   if (!message.content.toLowerCase().startsWith(prefix.toLowerCase())) return;
 
   const args = message.content.slice(prefix.length).trim().split(/ +/g);

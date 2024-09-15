@@ -1,20 +1,19 @@
-/*
- *
- * @AUTHOR
- * Name | @ricardo-as1
- * Instagram | https://www.instagram.com/kingzin.021/
- * GitHub | https://github.com/ricardo-as1
- * Repository | (https://github.com/ricardo-as1/Hyouka.git)
- * Support Server | (https://discord.gg/HKkHaqPNac)
+/**
+ * @author ricardo-as1
+ * @instagram https://www.instagram.com/kingzin.021/
+ * @github https://github.com/ricardo-as1
+ * @repository https://github.com/ricardo-as1/Hyouka.git
+ * @server_support https://discord.gg/HKkHaqPNac
  */
 
 /**
- * @type {import("../../Config/BaseCommands")}
+ * Placeholder command
+ * @type {import("../../Config/baseCommands.js")}
  */
 
 const { EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const { default_prefix } = require("../../Config/botconfig.js");
-const EmbedColor = require('../../Config/colors.js');
+const { DefaultEmbedColor } = require('../../Config/Colors.js');
+const { default_prefix } = require("../../Config/BotConfig.js");
 
 const CMDS_PER_PAGE = 5;
 const IDLE_TIMEOUT = 30;
@@ -23,42 +22,37 @@ module.exports = {
   name: "help",
   description: "Mostra uma lista de comandos.",
   category: "Global",
-  usage: "h!help",
+  usage: "help",
   cooldown: 10,
   aliases: ["ajuda"],
-  
-  /**
-   * @param {import('discord.js').Client} client
-   * @param {import('discord.js').Message} message
-   * @param {Array<string>} args
-  */
- 
- run: async (client, message) => {
-   const guildIconURL = message.guild?.iconURL({ dynamic: true }) || client.user.displayAvatarURL();
-   
-   const embed = new EmbedBuilder()
-   .setColor(EmbedColor.defaultEmbedColor)
-   .setAuthor({ name: "Hyouka - Lista de Comandos", iconURL: client.user.displayAvatarURL() })
-   .setImage(`https://share.creavite.co/66cd2dcbce0e5d041d7b5f6e.gif`)
-   .addFields([
-    {
-        name: "__**<a:Load:1273063236354179072> Features [1-5]**__",
-        value: `>>> <:MarkNumber_1:1272932141100957706> Admin 
+
+  async run(client, message) {
+
+    const guildIconURL = message.guild?.iconURL({ dynamic: true }) || client.user.displayAvatarURL();
+
+    const embed = new EmbedBuilder()
+      .setAuthor({ name: "Hyouka - Lista de Comandos", iconURL: client.user.displayAvatarURL() })
+      .setColor(DefaultEmbedColor)
+      .setImage(`https://share.creavite.co/66cd2dcbce0e5d041d7b5f6e.gif`)
+      .addFields([
+        {
+          name: "__**<a:Load:1273063236354179072> Features [1-5]**__",
+          value: `>>> <:MarkNumber_1:1272932141100957706> Admin 
                 <:MarkNumber_2:1272932155416383509> Automod 
                 <:MarkNumber_3:1272932171018932255> Moderation 
                 <:MarkNumber_4:1272932184382246973> Owner 
                 <:MarkNumber_5:1272932196600123547> Ticket`,
-        inline: true
-    },
-    {
-        name: "__**<a:Load:1273063236354179072> Features [6-10]**__",
-        value: `>>> <:MarkNumber_6:1272932211888357386> Utility
+          inline: true
+        },
+        {
+          name: "__**<a:Load:1273063236354179072> Features [6-10]**__",
+          value: `>>> <:MarkNumber_6:1272932211888357386> Utility
                 <:MarkNumber_7:1272932223737397389> Fun 
                 <:MarkNumber_8:1272932234411901042> Invite 
                 <:MarkNumber_9:1272932245853704202> Social 
                 <:MarkNumber10:1272932257652281487> Information`,
-        inline: true
-    }
+          inline: true
+        }
       ])
       .setDescription(`<a:Load:1273063236354179072> Olá ${message.author}, estou aqui para te ajudar. 
                      > **Sou um bot de moderação, diversão e utilitários.** 
@@ -90,7 +84,7 @@ module.exports = {
           .setLabel("Vote Me")
           .setStyle(ButtonStyle.Link)
           .setEmoji('1273392541319827469')
-          .setURL("https://top.gg/bot/123456789/vote"); */
+          .setURL(""); */
 
     const buttonsRow = new ActionRowBuilder().addComponents([supportButton, inviteButton/* voteButton */]);
 
@@ -107,7 +101,12 @@ module.exports = {
         description: "Comandos úteis para várias finalidades.",
         emoji: '1273392541319827469',
       },
-      // Adicione mais categorias conforme necessário
+      {
+        label: "Owner",
+        value: "owner",
+        description: "Comandos do dono do bot.",
+        emoji: '1273392541319827469',
+      },
     ];
 
     const menuRow = new ActionRowBuilder().addComponents(
@@ -147,7 +146,7 @@ const waiter = (msg, userId, prefix) => {
       case "help-menu": {
         const cat = response.values[0].toUpperCase();
         arrEmbeds = getCategoryEmbeds(cat, prefix);
-        currentPage = 0; 
+        currentPage = 0;
 
         let components = [];
         buttonsRow.components.forEach((button) =>
@@ -191,7 +190,6 @@ function getCategoryEmbeds(category, prefix) {
         { name: `${prefix}config`, description: "Configura o bot.", usage: `${prefix}config` },
         { name: `${prefix}setprefix`, description: "Define um novo prefixo para o bot.", usage: `${prefix}setprefix [prefixo]` },
         { name: `${prefix}resetprefix`, description: "Reseta o prefixo do bot.", usage: `${prefix}resetprefix` },
-        // Adicione mais comandos conforme necessário
       ];
       break;
     case "GLOBAL":
@@ -199,9 +197,12 @@ function getCategoryEmbeds(category, prefix) {
         { name: `${prefix}botinfo`, description: "Mostra informações sobre o bot.", usage: `${prefix}botinfo` },
         { name: `${prefix}ping`, description: "Mostra o ping do bot e inclui um botão para atualizar.", usage: `${prefix}ping` },
         { name: `${prefix}avatar`, description: "Mostra o avatar de um membro.", usage: `${prefix}avatar [@membro]` },
-        // Adicione mais comandos conforme necessário
       ];
       break;
+    case "OWNER":
+      commands = [
+        { name: `${prefix}test`, description: "Testa algum comando do bot.", usage: `${prefix}test` },
+      ]
     // Adicione mais categorias conforme necessário
   }
 
@@ -212,8 +213,8 @@ function getCategoryEmbeds(category, prefix) {
   for (let i = 0; i < maxPages; i++) {
     const current = commands.slice(i * CMDS_PER_PAGE, (i + 1) * CMDS_PER_PAGE);
     const embed = new EmbedBuilder()
-      .setColor(EmbedColor.defaultEmbedColor)
       .setTitle(`Comandos - ${category}`)
+      .setColor(DefaultEmbedColor)
       .setDescription(
         current.map(cmd => `
         <a:Discord:1275618727467028500> __**Nome:**__ \`${cmd.name}\`

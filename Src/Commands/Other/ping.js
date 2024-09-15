@@ -1,18 +1,18 @@
 /**
- * @AUTHOR
- * Name | @ricardo-as1
- * Instagram | https://www.instagram.com/kingzin.021/
- * GitHub | https://github.com/ricardo-as1
- * Repository | (https://github.com/ricardo-as1/Hyouka.git)
- * Support Server | (https://discord.gg/HKkHaqPNac)
+ * @author ricardo-as1
+ * @instagram https://www.instagram.com/kingzin.021/
+ * @github https://github.com/ricardo-as1
+ * @repository https://github.com/ricardo-as1/Hyouka.git
+ * @server_support https://discord.gg/HKkHaqPNac
  */
 
 /**
- * @type {import("../../Config/BaseCommands")}
+ * Placeholder command
+ * @type {import("../../Config/baseCommands.js")}
  */
 
 const { ActionRowBuilder, ButtonBuilder, EmbedBuilder } = require('discord.js');
-const EmbedColor = require('../../Config/colors.js');
+const { DefaultEmbedColor } = require('../../Config/Colors.js');
 
 module.exports = {
   name: "ping",
@@ -21,40 +21,31 @@ module.exports = {
   usage: "h!ping",
   cooldown: 10,
   aliases: ['pong', 'latency'],
-
-  /**
-   * @param {import('discord.js').Message} message
-   * @param {import('discord.js').Client} client
-   * @param {Array<string>} args
-   */
   
-  run: async (client, message) => {
-    const calculateApiPing = async () => {
-      const start = Date.now();
-      // await message.channel.sendTyping(); // Simula uma ação de digitação
-      return Date.now() - start;
-    };
+  async run(client, message) {
 
-    const guildIconURL = message.guild?.iconURL({ dynamic: true }) || client.user.displayAvatarURL();
-    const calculateGatewayPing = async () => {
-      const start = Date.now();
-      const ping = client.ws.ping;
-      const end = Date.now();
-      return ping || end - start;
+    // Função para calcular o API Ping real
+    const calculateApiPing = async () => {
+      const startTime = Date.now();
+      await message.channel.sendTyping();
+      return Date.now() - startTime;
     };
+    
+    const guildIconURL = message.guild?.iconURL({ dynamic: true }) || client.user.displayAvatarURL();
+    const calculateGatewayPing = () => client.ws.ping;
 
     const createPingEmbed = async () => {
+      const ping = calculateGatewayPing();
       const apiPing = await calculateApiPing();
-      const gatewayPing = await calculateGatewayPing();
       return new EmbedBuilder()
         .setAuthor({ name: `MEU PING É:`, iconURL: client.user.displayAvatarURL() })
         .setDescription(`
-          **Gateway Ping :** \`${gatewayPing}ms\`
-          **API Ping :** \`${apiPing}ms\`
-          `)
-        .setColor(EmbedColor.defaultEmbedColor)
+          **Gateway Ping :** \`${ping} ms\`
+          **API Ping :** \`${apiPing} ms\`
+        `)
+        .setColor(DefaultEmbedColor)
         .setFooter({ text: `${message.guild.name}`, iconURL: guildIconURL })
-        .setTimestamp()
+        .setTimestamp();
     };
 
     const createActionRow = () => {
@@ -78,15 +69,16 @@ module.exports = {
 
     collector.on('collect', async interaction => {
       await interaction.deferUpdate();
-      const updatedEmbed = await createPingEmbed();
       
+      const updatedEmbed = await createPingEmbed();
+
       await sentMessage.edit({
         embeds: [updatedEmbed],
         components: [createActionRow()]
       });
     });
 
-    collector.on('end', collected => {
+    collector.on('end', () => {
       sentMessage.edit({
         components: []
       });
