@@ -8,7 +8,7 @@
 
 /**
  * Placeholder command
- * @type {import("../../Config/baseCommands.js")}
+ * @type {import("../../Base/BaseCommands.js")}
  */
 
 const { EmbedBuilder } = require("discord.js");

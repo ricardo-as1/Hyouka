@@ -8,7 +8,7 @@
 
 /**
  * Placeholder command
- * @type {import("../../Config/baseCommands.js")}
+ * @type {import("../../Base/BaseCommands.js")}
  */
 
 const { ErrorEmbedColor, SuccessEmbedColor, WarningEmbedColor } = require("../../Config/Colors.js");

@@ -8,7 +8,7 @@
 
 /**
  * Placeholder command
- * @type {import("../../Config/BaseCommands.js")}
+ * @type {import("../../Base/BaseCommands.js")}
  */
 
 const { getCreatedDate, getUptime } = require('../../Config/TimeString.js');
