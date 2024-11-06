@@ -29,15 +29,15 @@ const loadCommands = (client) => {
     return;
   }
 
-  const categories = fs.readdirSync(commandsPath);
-  client.categories = categories;
+  const categorias = fs.readdirSync(commandsPath);
+  client.categories = categorias;
 
-  categories.forEach(category => {
+  categorias.forEach(category => {
     const categoryPath = path.join(commandsPath, category);
     const commandFiles = fs.readdirSync(categoryPath).filter(file => file.endsWith('.js'));
 
     if (commandFiles.length === 0) {
-      console.warn(chalk.yellow(`⚠️  | Nenhum comando encontrado na categoria "${category}".`));
+      console.warn(chalk.yellow(`⚠️ Aviso: Nenhum comando encontrado na categoria "${category}", sem riscos de quebrar o bot!`));
       return;
     }
 

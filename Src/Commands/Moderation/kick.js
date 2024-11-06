@@ -17,7 +17,7 @@ const { EmbedBuilder } = require('discord.js');
 module.exports = {
   name: "kick",
   description: "Kick a user from the server.",
-  category: "Admin",
+  category: "Moderation",
   usage: "h!kick <user> [reason]",
   cooldown: 10,
   aliases: ['expulsar'],

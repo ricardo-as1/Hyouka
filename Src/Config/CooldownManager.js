@@ -9,7 +9,7 @@
 const cooldowns = new Map();
 
 module.exports = {
-    setCooldown(commandName, userId, cooldownTime) { // Armazena o comando em cooldown
+    setCooldown(commandName, userId) { // Armazena o comando em cooldown
       if (!cooldowns.has(commandName)) {
         cooldowns.set(commandName, new Map());
       }

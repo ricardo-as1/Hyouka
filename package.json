@@ -12,9 +12,9 @@
   ],
   "main": "./Src/Hyouka.js",
   "scripts": {
-    "Dev": "nodemon Hyouka.js",
-    "StartInNode": "node Hyouka.js",
-    "StartInPM2": "pm2 start Hyouka.js --name Hyouka",
+    "Dev": "nodemon ./Src/Hyouka.js",
+    "StartInNode": "node ./Src/Hyouka.js",
+    "StartInPM2": "pm2 start ./Src/Hyouka.js --name Hyouka",
     "reStart": "pm2 restart Hyouka",
     "turnOff": "pm2 stop Hyouka",
     "clearList": "pm2 delete all"

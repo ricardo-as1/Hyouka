@@ -68,7 +68,7 @@ module.exports = {
     console.group(chalk.greenBright.bold.italic(`✔ BOT STATUS`));
     console.log(('🤖 ') + chalk.hex(ChalkBlue).underline.italic("Logado como:"), chalk.white.italic(client.user.tag));
     console.log(('🆔 ') + chalk.hex(ChalkBlue).underline.italic("Id do bot:"), chalk.white.italic(client.user.id));
-    console.log(('🟢') + chalk.hex(ChalkBlue).underline.italic("Atual status:"), chalk.green.italic(client.user.presence.status));
+    console.log(('🟢 ') + chalk.hex(ChalkBlue).underline.italic("Atual status:"), chalk.green.italic(client.user.presence.status));
     console.groupEnd();
 
     console.log('');

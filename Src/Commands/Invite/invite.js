@@ -26,7 +26,7 @@ module.exports = {
   async run(client, message, args) {
     const KingEmbed = new EmbedBuilder() // Cria o embed de convite informacional!
       .setAuthor({ name: `${client.user.username}`, iconURL: client.user.displayAvatarURL() })
-      .setDescription(`***Clique no botão abaixo para me convidar para o seu servidor ou para obter mais informações no meu servidor de support!***`)
+      .setDescription(`***Clique no botão abaixo para me convidar para o seu servidor ou para obter suporte no meu servidor!***`)
       .setThumbnail(client.user.displayAvatarURL())
       .setColor(DefaultEmbedColor)
       .setFooter({ text: `${message.guild.name}`, iconURL: message.guild.iconURL() })
