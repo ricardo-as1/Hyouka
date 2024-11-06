@@ -20,7 +20,7 @@ module.exports = {
   aliases: ["serverlist"],
   description: "Mostra uma lista de todos os meus servidores.",
   category: "Owner",
-  usage: "serverlist",
+  usage: "h!serverlist",
   cooldown: 10,
   
   async run(client, message, args) {

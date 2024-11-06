@@ -19,13 +19,11 @@ module.exports = {
   name: "invite",
   description: "Me convide para o seu servidor.",
   category: "Global",
-  usage: "invite",
+  usage: "h!invite",
   cooldown: 10,
   aliases: ['inv'],
 
   async run(client, message, args) {
-
-
     const KingEmbed = new EmbedBuilder() // Cria o embed de convite informacional!
       .setAuthor({ name: `${client.user.username}`, iconURL: client.user.displayAvatarURL() })
       .setDescription(`***Clique no botão abaixo para me convidar para o seu servidor ou para obter mais informações no meu servidor de support!***`)

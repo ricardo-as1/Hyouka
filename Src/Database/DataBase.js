@@ -26,7 +26,7 @@ function notifyPrefixAdded(guildId, newPrefix) {
 
 notifyDatabaseStarted(); // Chama a função para exibir a mensagem
 
-const { default_prefix } = require('../Config/BotConfig.js'); // Defina aqui o prefixo padrão do bot
+const defaultPrefix = require('../Config/BotConfig.js').default_prefix; // Defina aqui o prefixo padrão do bot
 
 // Criar uma tabela para prefixos, se não existir
 try {
@@ -39,7 +39,7 @@ try {
 function setPrefix(guildId, newPrefix) {
     try {
         // Não salvar o prefixo se ele for igual ao prefixo padrão
-        if (newPrefix === default_prefix) {
+        if (newPrefix === defaultPrefix) {
             removePrefix(guildId); // Remove o prefixo salvo se ele for redefinido para o padrão
             return;
         }
@@ -54,12 +54,17 @@ function setPrefix(guildId, newPrefix) {
 // Função para obter o prefixo de um servidor específico
 function getPrefix(guildId) {
     try {
+        // Converter guildId para string se não for um tipo aceitável
+        if (typeof guildId !== 'string' && typeof guildId !== 'number') {
+            guildId = String(guildId);  // Converte para string, se necessário
+        }
+
         const stmt = db.prepare('SELECT prefix FROM prefixes WHERE guildId = ?');
         const row = stmt.get(guildId);
-        return row ? row.prefix : default_prefix;  // Retorna o prefixo padrão se não houver prefixo definido
+        return row && row.prefix ? row.prefix : defaultPrefix;
     } catch (error) {
-        notifyError('Falha ao obter o prefixo.');
-        return default_prefix;
+        notifyError(`Falha ao obter o prefixo: ${error.message}`);
+        return defaultPrefix;
     }
 }
 

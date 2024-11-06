@@ -23,7 +23,6 @@ module.exports = {
   aliases: ['pong', 'latency'],
   
   async run(client, message) {
-
     // Função para calcular o API Ping real
     const calculateApiPing = async () => {
       const startTime = Date.now();

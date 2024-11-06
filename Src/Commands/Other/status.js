@@ -21,7 +21,7 @@ module.exports = {
   name: "status",
   description: "Mostra as informações do bot.",
   category: "Global",
-  usage: "status",
+  usage: "h!status",
   cooldown: 10,
   aliases: ['botinfo', 'binfo', 'info', 'stats'],
 

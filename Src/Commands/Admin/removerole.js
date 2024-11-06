@@ -19,13 +19,12 @@ module.exports = {
   name: "removerole",
   description: "Remove um cargo de um membro",
   category: "Admin",
-  usage: "removerole <membro> <cargo>",
+  usage: "h!removerole <membro> <cargo>",
   cooldown: 10,
   aliases: ['removercargo'],
   permission: ["ADMINISTRATOR"],
 
   async run(client, message) {
-
     const member = message.mentions.members.first();
     const role = message.mentions.roles.first();
     const guildIconURL = message.guild?.iconURL({ dynamic: true }) || client.user.displayAvatarURL();

@@ -18,7 +18,7 @@ module.exports = {
   name: "kick",
   description: "Kick a user from the server.",
   category: "Admin",
-  usage: "kick <user> [reason]",
+  usage: "h!kick <user> [reason]",
   cooldown: 10,
   aliases: ['expulsar'],
   permission: ["KICK_MEMBERS"],

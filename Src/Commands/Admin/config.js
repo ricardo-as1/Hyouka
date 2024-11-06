@@ -18,7 +18,7 @@ module.exports = {
   name: "config",
   description: "Exibe informações de configuração do bot e permite alterar o prefixo.",
   category: "Admin",
-  usage: "config",
+  usage: "h!config",
   cooldown: 10,
   permission: ["ADMINISTRATOR"],
 

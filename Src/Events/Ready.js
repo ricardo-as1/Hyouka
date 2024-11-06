@@ -9,11 +9,11 @@
 const { notifyDatabaseStarted } = require('../Database/DataBase.js');
 const { default_prefix } = require("../Config/BotConfig.js");
 const { ActivityType } = require("discord.js");
-const { ChalkBlue } = require("../Config/Colors");
+const { ChalkBlue } = require("../Config/Colors.js");
 const chalk = require("chalk");
 
 module.exports = { 
-  name: "Ready",
+  name: "ready",
   once: true,
   async execute(client) {
 
@@ -53,6 +53,7 @@ module.exports = {
 
     printSeparator();
 
+    // Informações sobre o bot
     const userCount = client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0);
     const serverCount = client.guilds.cache.size;
     const uptime = process.uptime().toFixed(2);

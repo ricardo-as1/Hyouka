@@ -25,7 +25,6 @@ module.exports = {
   permission: ["MANAGE_GUILD"],
 
   async run(client, message, args) {
-
     const guildIconURL = message.guild.iconURL({ dynamic: true }) || client.user.displayAvatarURL();
 
     if (!message.guild) {

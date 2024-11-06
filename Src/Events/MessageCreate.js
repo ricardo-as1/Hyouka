@@ -35,7 +35,7 @@ module.exports = {
     const command = client.commands.get(commandName) ||
       client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
-    // Loga o comando executado no terminal / Não recomando se for usar para projetos reais
+    // Loga o comando executado no terminal / Não recomendo se for usar para projetos reais
     /*     console.table({
           Command: commandName,
           Date: new Date().toLocaleString(),
@@ -68,19 +68,20 @@ module.exports = {
       // Executa o comando
       try {
         await command.run(client, message, args);
-      } catch (ErrorEmbedColor) {
-        console.ErrorEmbedColor('Erro ao executar comando:', ErrorEmbedColor);
+      } catch (Error) {
+        console.error('Erro ao executar comando:', Error);
 
         const embed = new EmbedBuilder()
-          .setTitle(`❌ **${message.author.username}**`)
+          .setAuthor({ name: message.author.tag, iconURL: message.author.displayAvatarURL({ dynamic: true }) })
+          .setTitle('Ocorreu um erro ao executar este comando! 🛑')
           .setColor(ErrorEmbedColor)
-          .setDescription(`Ocorreu um erro ao tentar executar o comando.`)
-          .setThumbnail(client.user.displayAvatarURL({ dynamic: true }))
+          .setDescription(`*__Motivo:__* \`\`\`diff\n- ${Error.toString()}\`\`\`*Por Favor, **Tente Novamente.***
+            __\nSe o problema persistir, denuncie-o com:__ \`\`\`Bash\n'${default_prefix}reportbug [Nome do Comando e Erro]'\`\`\`***Obrigado e desculpe pelo transtorno.***`)
+          .setThumbnail("https://media.stickerswiki.app/mrincrediblememe/1102632.512.webp")
           .setFooter({ text: `${message.guild.name}`, iconURL: message.guild.iconURL({ dynamic: true }) })
           .setTimestamp();
 
         return message.channel.send({ embeds: [embed] });
-
       }
     }
   }

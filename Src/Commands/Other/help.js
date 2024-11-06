@@ -22,12 +22,11 @@ module.exports = {
   name: "help",
   description: "Mostra uma lista de comandos.",
   category: "Global",
-  usage: "help",
+  usage: "h!help",
   cooldown: 10,
   aliases: ["ajuda"],
 
   async run(client, message) {
-
     const guildIconURL = message.guild?.iconURL({ dynamic: true }) || client.user.displayAvatarURL();
 
     const embed = new EmbedBuilder()

@@ -9,7 +9,7 @@
 const cooldowns = new Map();
 
 module.exports = {
-    setCooldown(commandName, userId, cooldownTime) {
+    setCooldown(commandName, userId, cooldownTime) { // Armazena o comando em cooldown
       if (!cooldowns.has(commandName)) {
         cooldowns.set(commandName, new Map());
       }
@@ -17,9 +17,9 @@ module.exports = {
       cooldowns.get(commandName).set(userId, now);
     },
 
-    isInCooldown(commandName, userId, cooldownTime) {
+    isInCooldown(commandName, userId, cooldownTime) { // Verifica se o comando está em cooldown
       if (!cooldowns.has(commandName)) return false;
-
+      
       const now = Date.now();
       const timestamps = cooldowns.get(commandName);
       const cooldown = timestamps.get(userId);

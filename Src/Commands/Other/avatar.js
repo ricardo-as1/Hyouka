@@ -18,7 +18,7 @@ module.exports = {
   name: "avatar",
   description: "Mostra informações de avatar dos usuários.",
   category: "Global",
-  usage: "avatar [@user]",
+  usage: "h!avatar [@user]",
   cooldown: 10,
   aliases: ["av"],
 

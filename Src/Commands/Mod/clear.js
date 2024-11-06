@@ -24,7 +24,6 @@ module.exports = {
   permission: ["MANAGE_MESSAGES"],
 
   async run(client, message, args) {
-
     const guildIconURL = message.guild?.iconURL({ dynamic: true }) || client.user.displayAvatarURL();
 
     if (!message.member.permissions.has("MANAGE_MESSAGES")) {

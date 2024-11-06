@@ -25,8 +25,6 @@ module.exports = {
   permission: ["ADMINISTRATOR"],
   
   async run(client, message) {
-
-
     const member = message.mentions.members.first();
     const role = message.mentions.roles.first();
     const guildIconURL = message.guild?.iconURL({ dynamic: true }) || client.user.displayAvatarURL();

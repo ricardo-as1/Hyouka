@@ -20,7 +20,7 @@ module.exports = {
   name: "resetprefix",
   description: "Reseta o prefixo para o padrão.",
   aliases: ['prefixreset'],
-  usage: "resetprefix",
+  usage: "h!resetprefix",
   cooldown: 10,
   category: "Admin",
   permission: ["MANAGE_GUILD"],
