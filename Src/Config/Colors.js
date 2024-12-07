@@ -2,8 +2,8 @@
  * @author ricardo-as1
  * @instagram https://www.instagram.com/kingzin.021/
  * @github https://github.com/ricardo-as1
- * @repository https://github.com/ricardo-as1/Hyouka.git
  * @server_support https://discord.gg/HKkHaqPNac
+ * @see https://github.com/ricardo-as1/Hyouka/blob/HyoukaDefaultBranch/Src/Config/Colors.js
  */
 
 module.exports = {

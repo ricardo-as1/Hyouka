@@ -2,29 +2,36 @@
  * @author ricardo-as1
  * @instagram https://www.instagram.com/kingzin.021/
  * @github https://github.com/ricardo-as1
- * @repository https://github.com/ricardo-as1/Hyouka.git
  * @server_support https://discord.gg/HKkHaqPNac
+ * @see https://github.com/ricardo-as1/Hyouka/blob/HyoukaDefaultBranch/Src/Database/DataBase.js
  */
 
 const Database = require('better-sqlite3');
 const db = new Database('./HyoukaDatabase.db');
 
-// Função para avisar que a database foi iniciada com sucesso
-function notifyDatabaseStarted() {
-    return 'Sucesso!'; // Mensagem ou status que você deseja exibir
-}
+/**
+ * Função para avisar sobre o status da inicialização da base de dados.
+ * @param {boolean} isDatabaseConnected - Estado da conexão com a base de dados (true se conectado, false caso contrário).
+ * @param {string} [errorMessage] - Mensagem de erro, caso haja algum erro na inicialização.
+ * @returns {string} - Mensagem de status sobre a base de dados.
+ */
 
-// Função para avisar sobre erros
-function notifyError(message) {
-    console.error(`Erro: ${message}`);
+function notifyDatabaseStatus(isDatabaseConnected, errorMessage = '') {
+    if (isDatabaseConnected) {
+        return 'Database On!';
+    } else if (errorMessage) {
+        console.error(`⚠️ Erro ao iniciar a base de dados: ${errorMessage}`);
+        return `⚠️ Erro ao iniciar a base de dados: ${errorMessage}`;
+    } else {
+        console.error('⚠️ A base de dados não foi conectada corretamente. Verifique a configuração.');
+        return '⚠️ A base de dados não foi conectada corretamente. Verifique a configuração.';
+    }
 }
 
 // Função para avisar sobre prefixos adicionados
 function notifyPrefixAdded(guildId, newPrefix) {
     console.log(`Prefixo "${newPrefix}" adicionado para o servidor com ID ${guildId}.`);
 }
-
-notifyDatabaseStarted(); // Chama a função para exibir a mensagem
 
 const defaultPrefix = require('../Config/BotConfig.js').default_prefix; // Defina aqui o prefixo padrão do bot
 
@@ -63,7 +70,7 @@ function getPrefix(guildId) {
         const row = stmt.get(guildId);
         return row && row.prefix ? row.prefix : defaultPrefix;
     } catch (error) {
-        notifyError(`Falha ao obter o prefixo: ${error.message}`);
+        console.error('Falha ao obter o prefixo:', error.message);
         return defaultPrefix;
     }
 }
@@ -80,7 +87,7 @@ function removePrefix(guildId) {
 
 // Exportando as funções
 module.exports = {
-    notifyDatabaseStarted,
+    notifyDatabaseStatus,
     setPrefix,
     getPrefix,
     removePrefix

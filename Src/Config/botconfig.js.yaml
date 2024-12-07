@@ -1,8 +1,0 @@
-module.exports = {
-	token: process.env.token || "", //- Adicione aqui o token do seu bot.
-	default_prefix: "h!", //- Adicione aqui o prefixo padrão do seu bot.
-	Bot_Invite: "", //- Adicione aqui o link do seu bot.
-	Support_Server: "", //- Adicione aqui o link do seu servidor de suporte.
-	IdOwner: [""], //- Adicione aqui os IDs dos administradores/Donos do seu bot.
-	secretcookie: "kingfofo", //- Isso aqui é só para brincar memo ;-;
-}

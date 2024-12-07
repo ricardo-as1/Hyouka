@@ -7,17 +7,28 @@
 
 <div align="center">
 
-![Versão](https://img.shields.io/badge/Versão-0.0.6-blue.svg)
+![Versão](https://img.shields.io/badge/Versão-0.0.7-blue.svg)
 [![Me adicione](https://img.shields.io/badge/Me-Adicione-blue.svg)](https://discord.com/oauth2/authorize?client_id=945037342605975643&permissions=8&integration_type=0&scope=bot)
 ![Status](https://img.shields.io/badge/Status-Development-blue.svg)
 [![License](https://img.shields.io/badge/License-AGPL_3.0-blue.svg)](/LICENSE)
 
 </div>
 
----
+<div style="display: flex; justify-content: center; gap: 25px; flex-wrap: wrap; align-items: center;">
+  <a href="https://discord.gg/PaePgHD6e9" title="Alpha Group Discord" target="_blank">
+    <img src="https://share.creavite.co/6754d6b901dbfe495dee4484.gif" style="width: 400px; border-radius: 17px;">
+  </a>
+  <a href="https://discord.gg/HKkHaqPNac" title="Dev's Company Discord" target="_blank">
+  <img src="https://share.creavite.co/6754d63d01dbfe495dee4482.gif" style="width: 400px; border-radius: 17px;">
+  </a>
+</div>
+
+***
 
 <p align="center"> Meu bot oferece recursos de moderação, comandos divertidos e utilitários, com opções personalizáveis como prefixos e sistema de cooldown, garantindo uma experiência aprimorada no Discord.
 </p>
+
+
 
 ## 📝 Sumário
 
@@ -89,11 +100,19 @@ Como iniciar, parar e outros comandos para o bot:
 
 ## 🧪 Author <a name="author"></a>
 
-<h3 align="center">@! King Ø₣Ć 👑</h3>
+<p align="center">
+  <a href="https://github.com/ricardo-as1" rel="noopener">
+    <span style="font-size: 25px;">Ricardo - Kingz</span>
+  </a>
+</p>
 
 <div align="center">
 
-[![Instagram](https://img.shields.io/badge/Instagram-blue.svg)](https://www.instagram.com/kingzin.021/)
-[![GitHub](https://img.shields.io/badge/GitHub-blue.svg)](https://github.com/ricardo-as1)
-[![Discord](https://img.shields.io/badge/Discord-blue.svg)](https://discord.com/channels/@904451208901722142)
+[![Instagram](https://img.shields.io/badge/🔗_Instagram-blue.svg)](https://www.instagram.com/kingzin.021/)
+[![GitHub](https://img.shields.io/badge/🔗_GitHub-blue.svg)](https://github.com/ricardo-as1)
+</div>
+<div align="center">
+
+[![Alpha Group Discord](https://img.shields.io/badge/🔗_Alpha_Group_Discord-blue.svg)](https://discord.gg/PaePgHD6e9)
+[![Dev's Company Discord](https://img.shields.io/badge/🔗_Dev's_Company_Discord-blue.svg)](https://discord.gg/HKkHaqPNac)
 </div>

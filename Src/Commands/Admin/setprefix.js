@@ -2,8 +2,8 @@
  * @author ricardo-as1
  * @instagram https://www.instagram.com/kingzin.021/
  * @github https://github.com/ricardo-as1
- * @repository https://github.com/ricardo-as1/Hyouka.git
  * @server_support https://discord.gg/HKkHaqPNac
+ * @see https://github.com/ricardo-as1/Hyouka/blob/HyoukaDefaultBranch/Src/Commands/Admin/setprefix.js
  */
 
 /**
@@ -12,44 +12,43 @@
  */
 
 const { ErrorEmbedColor, SuccessEmbedColor } = require("../../Config/Colors.js");
-const { EmbedBuilder } = require('discord.js');
+const { EmbedBuilder, PermissionsBitField } = require('discord.js');
 const { setPrefix } = require('../../Database/DataBase.js');
 
 module.exports = {
-  name: "setprefix",
-  description: "Define um novo prefixo para o servidor.",
+  name: 'setprefix',
+  description: 'Define um novo prefixo para o servidor.',
   aliases: ['prefix', 'changeprefix'],
-  usage: "h!setprefix <prefix>",
-  cooldown: 10,
-  category: "Admin",
-  permission: ["MANAGE_GUILD"],
+  usage: 'h!setprefix <prefix>',
+  category: 'Admin',
+  permission: [PermissionsBitField.Flags.ManageGuild],
 
   async run(client, message, args) {
-    const guildIconURL = message.guild.iconURL({ dynamic: true }) || client.user.displayAvatarURL();
-
+    // Verifica se o servidor foi mencionado
     if (!message.guild) {
-      message.channel.send("Servidor não encontrado.");
-      return;
-    }
+     return message.channel.send("Servidor não encontrado.");
+    } 
 
-    if (!message.member.permissions.has("MANAGE_GUILD")) {
-      const embed = new EmbedBuilder()
-        .setTitle(`<:CheckIncorrect:1272975727821590561> Erro`)
+    // Verifica se o autor da mensagem possui permissão necessária.
+    if (!message.member.permissions.has(PermissionsBitField.Flags.ManageGuild)) {
+      const PermissionDenied = new EmbedBuilder()
+        .setAuthor({ name: "Hyouka - Permissão Negada", iconURL: client.user.displayAvatarURL() })
         .setColor(ErrorEmbedColor)
-        .setDescription(`**${message.author.toString()}, você não tem permissão para alterar o prefixo.**`)
-        .setFooter({ text: `${message.guild.name}`, iconURL: guildIconURL })
+        .setDescription(`**${message.author.toString()}, Vocês precisa da permissão \`Gerenciar Servidor\` para resetar o prefixo.**`)
+        .setFooter({ text: `${message.guild.name}`, iconURL: message.guild.iconURL({ dynamic: true }) })
         .setTimestamp();
 
-      return message.channel.send({ embeds: [embed] });
+      return message.channel.send({ embeds: [PermissionDenied] });
     }
 
+    // Verifica se o prefixo foi fornecido 
     const newPrefix = args[0];
     if (!newPrefix) {
       const PrefixEmbed = new EmbedBuilder()
-        .setTitle(`<:CheckIncorrect:1272975727821590561> Erro`)
+        .setAuthor({ name: "Hyouka - Erro", iconURL: client.user.displayAvatarURL() })
         .setColor(ErrorEmbedColor)
         .setDescription(`**${message.author.toString()} Por favor, forneça um novo prefixo.**`)
-        .setFooter({ text: `${message.guild.name}`, iconURL: guildIconURL })
+        .setFooter({ text: `${message.guild.name}`, iconURL: message.guild.iconURL({ dynamic: true }) })
         .setTimestamp();
 
       return message.channel.send({ embeds: [PrefixEmbed] });
@@ -59,20 +58,20 @@ module.exports = {
       setPrefix(message.guild.id, newPrefix);
 
       const SuccessEmbed = new EmbedBuilder()
-        .setTitle(`<:Lootbox:1273392541319827469> Sucesso`)
+        .setAuthor({ name: "Hyouka - Sucesso", iconURL: client.user.displayAvatarURL() })
         .setColor(SuccessEmbedColor)
         .setDescription(`<:Developer:1273392334956007477> **Prefixo alterado para:** \`${newPrefix}\``)
-        .setFooter({ text: `${message.guild.name}`, iconURL: guildIconURL })
+        .setFooter({ text: `${message.guild.name}`, iconURL: message.guild.iconURL({ dynamic: true }) })
         .setTimestamp();
 
       return message.channel.send({ embeds: [SuccessEmbed] });
     } catch (error) {
       console.error("Erro ao definir o prefixo:", error);
       const errorEmbed = new EmbedBuilder()
-        .setTitle(`<:CheckIncorrect:1272975727821590561> Erro`)
+        .setAuthor({ name: "Hyouka - Erro", iconURL: client.user.displayAvatarURL() })
         .setColor(ErrorEmbedColor)
         .setDescription(`**${message.author.toString()} Ocorreu um erro ao tentar definir o prefixo.**`)
-        .setFooter({ text: `${message.guild.name}`, iconURL: guildIconURL })
+        .setFooter({ text: `${message.guild.name}`, iconURL: message.guild.iconURL({ dynamic: true }) })
         .setTimestamp();
 
       return message.channel.send({ embeds: [errorEmbed] });

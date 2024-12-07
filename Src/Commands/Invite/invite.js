@@ -2,8 +2,8 @@
  * @author ricardo-as1
  * @instagram https://www.instagram.com/kingzin.021/
  * @github https://github.com/ricardo-as1
- * @repository https://github.com/ricardo-as1/Hyouka.git
  * @server_support https://discord.gg/HKkHaqPNac
+ * @see https://github.com/ricardo-as1/Hyouka/blob/HyoukaDefaultBranch/Src/Commands/Invite/invite.js
  */
 
 /**
@@ -20,7 +20,6 @@ module.exports = {
   description: "Me convide para o seu servidor.",
   category: "Global",
   usage: "h!invite",
-  cooldown: 10,
   aliases: ['inv'],
 
   async run(client, message, args) {
@@ -47,6 +46,6 @@ module.exports = {
     const components = [new ActionRowBuilder()
       .addComponents(InviteLink, SupportServer)];
 
-    await message.reply({ embeds: [KingEmbed], components: components });
+    return message.channel.send({ embeds: [KingEmbed], components: components });
   }
 }

@@ -2,8 +2,8 @@
  * @author ricardo-as1
  * @instagram https://www.instagram.com/kingzin.021/
  * @github https://github.com/ricardo-as1
- * @repository https://github.com/ricardo-as1/Hyouka.git
  * @server_support https://discord.gg/HKkHaqPNac
+ * @see https://github.com/ricardo-as1/Hyouka/blob/HyoukaDefaultBranch/Src/Commands/Admin/resetprefix.js
  */
 
 /**
@@ -12,42 +12,56 @@
  */
 
 const { SuccessEmbedColor, ErrorEmbedColor } = require('../../Config/Colors.js');
+const { EmbedBuilder, PermissionsBitField } = require('discord.js');
 const { default_prefix } = require('../../Config/BotConfig.js');
 const { removePrefix } = require('../../Database/DataBase.js');
-const { EmbedBuilder } = require('discord.js');
 
 module.exports = {
-  name: "resetprefix",
-  description: "Reseta o prefixo para o padrão.",
+  name: 'resetprefix',
+  description: 'Reseta o prefixo para o padrão.',
   aliases: ['prefixreset'],
-  usage: "h!resetprefix",
-  cooldown: 10,
-  category: "Admin",
-  permission: ["MANAGE_GUILD"],
+  usage: 'h!resetprefix',
+  category: 'Admin',
+  permission: [PermissionsBitField.Flags.ManageGuild],
 
   async run(client, message) {
-    const guildIconURL = message.guild.iconURL({ dynamic: true }) || client.user.displayAvatarURL();
 
-    if (!message.member.permissions.has("MANAGE_GUILD")) {
+    // Verifica se o autor da mensagem possui permissão necessária.
+    if (!message.member.permissions.has(PermissionsBitField.Flags.ManageGuild)) {
       const noPermissionEmbed = new EmbedBuilder()
-        .setTitle(`<:CheckIncorrect:1272975727821590561> **${message.author.username}**`)
+        .setAuthor({ name: "Hyouka - Permissão Negada", iconURL: client.user.displayAvatarURL() })
         .setColor(ErrorEmbedColor)
-        .setDescription(`__**${message.author.toString()}, Você não tem permissão para resetar o prefixo.__`)
+        .setDescription(`**${message.author.toString()}, Vocês precisa da permissão \`Gerenciar Servidor\` para resetar o prefixo.**`)
         .setFooter({ text: `${message.guild.name}`, iconURL: message.guild.iconURL({ dynamic: true }) })
         .setTimestamp();
 
       return message.channel.send({ embeds: [noPermissionEmbed] });
     }
 
+    // Verifica se o prefixo ja esta no padrão
+    if (message.guild.prefix === default_prefix) {
+      const samePrefixEmbed = new EmbedBuilder()
+        .setAuthor({ name: "Hyouka - Erro", iconURL: client.user.displayAvatarURL() })
+        .setColor(ErrorEmbedColor)
+        .setDescription(`${message.author.toString()}, O prefixo já está no padrão.`)
+        .setFooter({ text: `${message.guild.name}`, iconURL: message.guild.iconURL({ dynamic: true }) })
+        .setTimestamp();
+
+      return message.channel.send({ embeds: [samePrefixEmbed] });
+    }
+
+    // Resetando o prefixo para o padrão
+    if (message.guild.prefix !== default_prefix) {
     removePrefix(message.guild.id);
 
     const successEmbed = new EmbedBuilder()
-      .setTitle(`<:Lootbox:1273392541319827469> Prefixo Resetado`)
+      .setAuthor({ name: "Hyouka - Sucesso", iconURL: client.user.displayAvatarURL() })
       .setColor(SuccessEmbedColor)
-      .setDescription(`<:Developer:1273392334956007477> **O prefixo foi resetado para o padrão: \`${default_prefix}\`**`)
-      .setFooter({ text: `${message.guild.name}`, iconURL: guildIconURL })
+      .setDescription(`<:Developer:1273392334956007477> **O prefixo foi resetado para: \`${default_prefix}\`**`)
+      .setFooter({ text: `${message.guild.name}`, iconURL: message.guild.iconURL({ dynamic: true }) })
       .setTimestamp()
 
     return message.channel.send({ embeds: [successEmbed] });
   }
-};
+  }
+}
