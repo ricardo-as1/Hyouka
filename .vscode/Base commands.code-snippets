@@ -1,0 +1,27 @@
+{
+/**
+ * @author ricardo-as1
+ * @instagram https://www.instagram.com/kingzin.021/
+ * @github https://github.com/ricardo-as1
+ * @repository https://github.com/ricardo-as1/Hyouka.git
+ * @server_support https://discord.gg/HKkHaqPNac
+ */
+
+/**
+ * Placeholder command
+ * @type {import("../../Base/BaseCommands.js")}
+ */
+
+// module.exports = {
+//   name: '',
+//   description: '',
+//   category: '',
+//   usage: '',
+//   aliases: [''],
+//   permission: [''],
+
+//   async run(client, message, args) {
+
+//   }
+// }
+}

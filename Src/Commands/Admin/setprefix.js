@@ -1,9 +1,8 @@
 /**
  * @author ricardo-as1
- * @instagram https://www.instagram.com/kingzin.021/
- * @github https://github.com/ricardo-as1
- * @repository https://github.com/ricardo-as1/Hyouka.git
- * @server_support https://discord.gg/HKkHaqPNac
+ * @github https://github.com/ricardo-as1/Hyouka.git
+ * @support https://discord.gg/5MWurPkP6S
+ * @see https://github.com/ricardo-as1/Hyouka/blob/HyoukaDefaultBranch/Src/Commands/Admin/setprefix.js
  */
 
 /**
@@ -11,18 +10,17 @@
  * @type {import("../../Base/BaseCommands.js")}
  */
 
-const { ErrorEmbedColor, SuccessEmbedColor } = require("../../Config/Colors.js");
-const { EmbedBuilder } = require('discord.js');
 const { setPrefix } = require('../../Database/DataBase.js');
+const { EmbedBuilder, PermissionFlagsBits } = require('discord.js');
+const { Sync: { defaultPrefix }, Colors: { errorEmbedColor, successEmbedColor } } = require("../../ConfigHub/System.js");
 
 module.exports = {
   name: "setprefix",
   description: "Define um novo prefixo para o servidor.",
   aliases: ['prefix', 'changeprefix'],
-  usage: "h!setprefix <prefix>",
-  cooldown: 10,
+  usage: `${defaultPrefix}setprefix <prefix>`,
   category: "Admin",
-  permission: ["MANAGE_GUILD"],
+  permission: ["Administrator"],
 
   async run(client, message, args) {
     const guildIconURL = message.guild.iconURL({ dynamic: true }) || client.user.displayAvatarURL();
@@ -32,11 +30,11 @@ module.exports = {
       return;
     }
 
-    if (!message.member.permissions.has("MANAGE_GUILD")) {
+    if (!message.member.permissions.has(PermissionFlagsBits.Administrator)) {
       const embed = new EmbedBuilder()
         .setTitle(`<:CheckIncorrect:1272975727821590561> Erro`)
-        .setColor(ErrorEmbedColor)
-        .setDescription(`**${message.author.toString()}, você não tem permissão para alterar o prefixo.**`)
+        .setColor(errorEmbedColor)
+        .setDescription(`**<:CheckIncorrect:1272975727821590561> Vocês precisa ser Administrador para usar este comando!**.`)
         .setFooter({ text: `${message.guild.name}`, iconURL: guildIconURL })
         .setTimestamp();
 
@@ -47,7 +45,7 @@ module.exports = {
     if (!newPrefix) {
       const PrefixEmbed = new EmbedBuilder()
         .setTitle(`<:CheckIncorrect:1272975727821590561> Erro`)
-        .setColor(ErrorEmbedColor)
+        .setColor(errorEmbedColor)
         .setDescription(`**${message.author.toString()} Por favor, forneça um novo prefixo.**`)
         .setFooter({ text: `${message.guild.name}`, iconURL: guildIconURL })
         .setTimestamp();
@@ -60,7 +58,7 @@ module.exports = {
 
       const SuccessEmbed = new EmbedBuilder()
         .setTitle(`<:Lootbox:1273392541319827469> Sucesso`)
-        .setColor(SuccessEmbedColor)
+        .setColor(successEmbedColor)
         .setDescription(`<:Developer:1273392334956007477> **Prefixo alterado para:** \`${newPrefix}\``)
         .setFooter({ text: `${message.guild.name}`, iconURL: guildIconURL })
         .setTimestamp();
@@ -70,7 +68,7 @@ module.exports = {
       console.error("Erro ao definir o prefixo:", error);
       const errorEmbed = new EmbedBuilder()
         .setTitle(`<:CheckIncorrect:1272975727821590561> Erro`)
-        .setColor(ErrorEmbedColor)
+        .setColor(errorEmbedColor)
         .setDescription(`**${message.author.toString()} Ocorreu um erro ao tentar definir o prefixo.**`)
         .setFooter({ text: `${message.guild.name}`, iconURL: guildIconURL })
         .setTimestamp();

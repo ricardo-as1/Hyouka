@@ -1,4 +1,12 @@
 # Arquivo de configuração geral do bot.
-botconfig.js
+system.js
 package-lock.json
 node_modules
+
+
+#Temporário, projeto bugado
+progressmetacall.js.yaml
+ranktempcall.js.yaml
+resettempcall.js.yaml
+settempcall.js.yaml
+tempcall.js.yaml

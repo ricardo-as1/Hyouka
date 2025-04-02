@@ -1,38 +1,38 @@
 /**
  * @author ricardo-as1
- * @instagram https://www.instagram.com/kingzin.021/
- * @github https://github.com/ricardo-as1
- * @repository https://github.com/ricardo-as1/Hyouka.git
- * @server_support https://discord.gg/HKkHaqPNac
+ * @github https://github.com/ricardo-as1/Hyouka.git
+ * @support https://discord.gg/5MWurPkP6S
+ * @see https://github.com/ricardo-as1/Hyouka/blob/HyoukaDefaultBranch/Src/Database/DataBase.js
  */
 
 const Database = require('better-sqlite3');
-const db = new Database('./HyoukaDatabase.db');
+const db = new Database('./Hyouka.db');
+const { Sync: { defaultPrefix } } = require('../ConfigHub/System.js');
 
-// Função para avisar que a database foi iniciada com sucesso
-function notifyDatabaseStarted() {
-    return 'Sucesso!'; // Mensagem ou status que você deseja exibir
+/**
+ * Função para notificar o status da inicialização da base de dados.
+ * @param {boolean} isDatabaseConnected - Estado da conexão com a base de dados (true se conectado, false caso contrário).
+ * @param {string} [errorMessage] - Mensagem de erro, caso haja algum erro na inicialização.
+ * @returns {string} - Mensagem de status sobre a base de dados.
+ */
+function notifyDatabaseStatus(isDatabaseConnected, errorMessage = '') {
+    if (isDatabaseConnected) {
+        return 'Database On!';
+    } else if (errorMessage) {
+        console.error(`⚠️ Erro ao iniciar a base de dados: ${errorMessage}`);
+        return `⚠️ Erro ao iniciar a base de dados: ${errorMessage}`;
+    } else {
+        console.error('⚠️ A base de dados não foi conectada corretamente. Verifique a configuração.');
+        return '⚠️ A base de dados não foi conectada corretamente. Verifique a configuração.';
+    }
 }
 
-// Função para avisar sobre erros
-function notifyError(message) {
-    console.error(`Erro: ${message}`);
-}
-
-// Função para avisar sobre prefixos adicionados
-function notifyPrefixAdded(guildId, newPrefix) {
-    console.log(`Prefixo "${newPrefix}" adicionado para o servidor com ID ${guildId}.`);
-}
-
-notifyDatabaseStarted(); // Chama a função para exibir a mensagem
-
-const defaultPrefix = require('../Config/BotConfig.js').default_prefix; // Defina aqui o prefixo padrão do bot
-
-// Criar uma tabela para prefixos, se não existir
+// Função para criar as tabelas, se não existirem
 try {
     db.exec('CREATE TABLE IF NOT EXISTS prefixes (guildId TEXT PRIMARY KEY, prefix TEXT)');
 } catch (error) {
-    notifyError('Falha ao criar a tabela de prefixos.');
+    console.error('Erro ao criar as tabelas:', error.message);
+    notifyDatabaseStatus(false, 'Falha ao criar as tabelas de dados.');
 }
 
 // Função para definir um novo prefixo para um servidor específico
@@ -43,11 +43,11 @@ function setPrefix(guildId, newPrefix) {
             removePrefix(guildId); // Remove o prefixo salvo se ele for redefinido para o padrão
             return;
         }
+
         const stmt = db.prepare('INSERT INTO prefixes (guildId, prefix) VALUES (?, ?) ON CONFLICT(guildId) DO UPDATE SET prefix = excluded.prefix');
-        stmt.run(guildId, newPrefix);
-        notifyPrefixAdded(guildId, newPrefix); // Avisar que o prefixo foi adicionado
+        stmt.run(guildId, newPrefix);  // Salva o novo prefixo ou atualiza caso já exista
     } catch (error) {
-        notifyError('Falha ao definir o prefixo.');
+        console.error('Falha ao definir o prefixo:', error.message);
     }
 }
 
@@ -60,10 +60,10 @@ function getPrefix(guildId) {
         }
 
         const stmt = db.prepare('SELECT prefix FROM prefixes WHERE guildId = ?');
-        const row = stmt.get(guildId);
+        const row = stmt.get(guildId);  // Retorna a linha correspondente
         return row && row.prefix ? row.prefix : defaultPrefix;
     } catch (error) {
-        notifyError(`Falha ao obter o prefixo: ${error.message}`);
+        console.error('Falha ao obter prefixo:', error.message);
         return defaultPrefix;
     }
 }
@@ -72,16 +72,17 @@ function getPrefix(guildId) {
 function removePrefix(guildId) {
     try {
         const stmt = db.prepare('DELETE FROM prefixes WHERE guildId = ?');
-        stmt.run(guildId);
+        stmt.run(guildId);  // Executa o comando para remover o prefixo
     } catch (error) {
-        notifyError('Falha ao remover o prefixo.');
+        console.error('Falha ao remover o prefixo:', error.message);
     }
 }
 
 // Exportando as funções
 module.exports = {
-    notifyDatabaseStarted,
+    db,
     setPrefix,
     getPrefix,
-    removePrefix
+    removePrefix,
+    notifyDatabaseStatus
 };

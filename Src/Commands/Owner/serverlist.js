@@ -1,9 +1,8 @@
 /**
  * @author ricardo-as1
- * @instagram https://www.instagram.com/kingzin.021/
- * @github https://github.com/ricardo-as1
- * @repository https://github.com/ricardo-as1/Hyouka.git
- * @server_support https://discord.gg/HKkHaqPNac
+ * @github https://github.com/ricardo-as1/Hyouka.git
+ * @support https://discord.gg/5MWurPkP6S
+ * @see https://github.com/ricardo-as1/Hyouka/blob/HyoukaDefaultBranch/Src/Commands/Owner/serverlist.js
  */
 
 /**
@@ -12,22 +11,21 @@
  */
 
 const { EmbedBuilder, ButtonBuilder, ActionRowBuilder } = require('discord.js');
-const { IdOwner } = require('../../Config/BotConfig.js');
-const { DefaultEmbedColor } = require('../../Config/Colors.js');
+const { Sync: { idOwner, defaultPrefix }, Colors: { defaultEmbedColor } } = require('../../ConfigHub/System.js');
 
 module.exports = {
   name: "serverlist",
   aliases: ["serverlist"],
   description: "Mostra uma lista de todos os meus servidores.",
   category: "Owner",
-  usage: "h!serverlist",
-  cooldown: 10,
+  usage: `${defaultPrefix}serverlist`,
+  permission: ["OWNER"],
   
   async run(client, message, args) {
-    if (!IdOwner.includes(message.author.id)) {
+    if (!idOwner.includes(message.author.id)) {
       const usagerr = new EmbedBuilder()
         .setAuthor({ name: `${client.user.username}`, iconURL: client.user.displayAvatarURL() })
-        .setColor(DefaultEmbedColor)
+        .setColor(defaultEmbedColor)
         .setDescription(`<:fechar:918747498984665108> | Ops, apenas meus desenvolvedores podem utilizar este comando!`)
         .setFooter({ text: `${message.guild.name}`, iconURL: message.guild.iconURL({ dynamic: true }) })
         .setTimestamp();
@@ -77,7 +75,7 @@ module.exports = {
 
     const embed = new EmbedBuilder()
       .setTitle(`Lista de Servidores`)
-      .setColor(DefaultEmbedColor)
+      .setColor(defaultEmbedColor)
       .setThumbnail(message.guild.iconURL({ dynamic: true }))
       .setDescription(await formatGuildList(currentPageGuilds, page, sortedGuilds.length))
       .setFooter({ text: `Página ${page}/${Math.ceil(sortedGuilds.length / 10)}`, iconURL: client.user.displayAvatarURL() })
@@ -115,7 +113,7 @@ module.exports = {
         const prevPageGuilds = sortedGuilds.slice(i0, i1);
         const updatedEmbed = new EmbedBuilder()
           .setTitle(`Lista de Servidores`)
-          .setColor(DefaultEmbedColor)
+          .setColor(defaultEmbedColor)
           .setThumbnail(message.guild.iconURL({ dynamic: true }))
           .setDescription(await formatGuildList(prevPageGuilds, page, sortedGuilds.length))
           .setFooter({ text: `Página ${page}/${Math.ceil(sortedGuilds.length / 10)}`, iconURL: client.user.displayAvatarURL() })

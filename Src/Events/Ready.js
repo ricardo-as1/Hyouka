@@ -1,66 +1,61 @@
 /**
  * @author ricardo-as1
- * @instagram https://www.instagram.com/kingzin.021/
- * @github https://github.com/ricardo-as1
- * @repository https://github.com/ricardo-as1/Hyouka.git
- * @server_support https://discord.gg/HKkHaqPNac
+ * @github https://github.com/ricardo-as1/Hyouka.git
+ * @support https://discord.gg/5MWurPkP6S
+ * @see https://github.com/ricardo-as1/Hyouka/blob/HyoukaDefaultBranch/Src/Events/Ready.js
  */
 
-const { notifyDatabaseStarted } = require('../Database/DataBase.js');
-const { default_prefix } = require("../Config/BotConfig.js");
+const { ChalkColors: { ChalkBlue } } = require("../ConfigHub/System.js");
+const { Sync: { defaultPrefix } } = require("../ConfigHub/System.js");
+
+const { notifyDatabaseStatus } = require('../Database/DataBase.js');
 const { ActivityType } = require("discord.js");
-const { ChalkBlue } = require("../Config/Colors.js");
 const chalk = require("chalk");
 
-module.exports = { 
+module.exports = {
   name: "ready",
   once: true,
-  async execute(client) {
 
+  async execute(client) {
+    // Atividades do bot
     const activities = [
       {
-        name: `${default_prefix}config - Para mudar meu prefixo!`,
-        type: ActivityType.Watching // Tipos de atividade: Watching, Listening, Playing, Streaming
+        name: `${defaultPrefix}config - Para mudar meu prefixo!`,
+        type: ActivityType.Watching
       },
       {
         name: `musica com meus ${client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0)} filhos 🤪`,
         type: ActivityType.Listening
       },
       {
-        name: `${default_prefix}help - Para ver minha lista de comandos!`,
+        name: `${defaultPrefix}help - Para ver minha lista de comandos!`,
         type: ActivityType.Playing
       }
     ];
-    
+
     let currentActivity = 0;
-    
+
     function updatePresence() {
       client.user.setPresence({
         activities: [activities[currentActivity]],
-        status: 'online' // Tipos de status: online, idle, dnd, invisible
+        status: 'online'
       });
-    
       currentActivity = (currentActivity + 1) % activities.length;
     }
-    
+
     setInterval(updatePresence, 8000);
-    
     updatePresence();
 
-    function printSeparator() {
-      console.log(chalk.hex(ChalkBlue)("═".repeat(process.stdout.columns)));
-    }
+    // Logs
+    console.log(chalk.hex(ChalkBlue)("═".repeat(process.stdout.columns)));
 
-    printSeparator();
-
-    // Informações sobre o bot
     const userCount = client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0);
     const serverCount = client.guilds.cache.size;
     const uptime = process.uptime().toFixed(2);
-    const Database = notifyDatabaseStarted();
+    const Database = notifyDatabaseStatus(true);
 
     console.group(chalk.greenBright.bold.italic('✔ Database Status'));
-    console.log(chalk.white.italic("🗃️"), chalk.hex(ChalkBlue).underline.italic(`${Database}`));
+    console.log(chalk.white.italic("🗃️"), chalk.hex(ChalkBlue).underline.italic(Database));
     console.groupEnd();
 
     console.log('');
@@ -89,10 +84,13 @@ module.exports = {
       `${chalk.hex(ChalkBlue).underline.italic("NodeJs")} ${chalk.white.italic(process.versions.node)}`,
       "/",
       "⏱️ ",
-      `${chalk.hex(ChalkBlue).underline.italic("Uptime")} ${chalk.white.italic(uptime + 's')}`,
+      `${chalk.hex(ChalkBlue).underline.italic("Uptime")} ${chalk.white.italic(uptime + 's')}`
     );
     console.groupEnd();
 
-    printSeparator();
+    console.log('');
+
+    console.log(chalk.hex(ChalkBlue)("═".repeat(process.stdout.columns)));
+
   }
 };

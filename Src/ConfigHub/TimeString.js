@@ -1,10 +1,30 @@
 /**
  * @author ricardo-as1
- * @instagram https://www.instagram.com/kingzin.021/
- * @github https://github.com/ricardo-as1
- * @repository https://github.com/ricardo-as1/Hyouka.git
- * @server_support https://discord.gg/HKkHaqPNac
+ * @github https://github.com/ricardo-as1/Hyouka.git
+ * @support https://discord.gg/5MWurPkP6S
+ * @see https://github.com/ricardo-as1/Hyouka/blob/HyoukaDefaultBranch/Src/ConfigHub/TimeString.js
  */
+
+const formatTime = (timeInMinutes) => {
+  // Verifica se o tempo é um número válido
+  if (isNaN(timeInMinutes) || timeInMinutes < 0) {
+    return '0h 0m 0s';
+  }
+
+  const hours = Math.floor(timeInMinutes / 60);
+  const minutes = Math.floor(timeInMinutes % 60);
+  const seconds = Math.floor((timeInMinutes - Math.floor(timeInMinutes)) * 60);
+
+  // Formata o tempo em horas, minutos e segundos
+  const formattedHours = hours.toString().padStart(2, '0');
+  const formattedMinutes = minutes.toString().padStart(2, '0');
+  const formattedSeconds = seconds.toString().padStart(2, '0');
+
+
+  // Retorna o tempo formatado
+  return `${formattedHours}h ${formattedMinutes}m ${formattedSeconds}s`;
+};
+
 
 const getFormattedDate = () => {
   const now = new Date();
@@ -35,6 +55,7 @@ function getCreatedDate(date) {
 }
 
 module.exports = {
+  formatTime,
   getCreatedDate,
   getUptime,
   getFormattedDate

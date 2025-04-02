@@ -1,88 +1,111 @@
 /**
  * @author ricardo-as1
- * @instagram https://www.instagram.com/kingzin.021/
- * @github https://github.com/ricardo-as1
- * @repository https://github.com/ricardo-as1/Hyouka.git
- * @server_support https://discord.gg/HKkHaqPNac
+ * @github https://github.com/ricardo-as1/Hyouka.git
+ * @support https://discord.gg/5MWurPkP6S
+ * @see https://github.com/ricardo-as1/Hyouka/blob/HyoukaDefaultBranch/Src/Events/MessageCreate.js
  */
 
-const { setCooldown, isInCooldown } = require('../Config/CooldownManager.js');
-const { ErrorEmbedColor } = require('../Config/Colors.js');
-const { default_prefix } = require('../Config/BotConfig.js');
+const { Colors: { errorEmbedColor } } = require('../ConfigHub/System.js');
+const { Sync: { defaultPrefix } } = require('../ConfigHub/System.js');
+
 const { EmbedBuilder } = require('discord.js');
-const { getPrefix } = require('../Database/DataBase.js');
+const { getPrefix, isMaintenanceMode } = require('../Database/DataBase.js');
+const { setCooldown, isInCooldown, isGlobalCooldownEnabled, isCommandUsageExceeded } = require('./StateManager.js');
 
 module.exports = {
   name: 'messageCreate',
   once: false,
 
   async execute(message, client) {
-    // Ignora mensagens de bots ou mensagens fora de guildas
     if (message.author.bot || message.channel.type === 'DM') return;
 
-    // Obtém o prefixo do banco de dados ou usa o padrão
     const savedPrefix = await getPrefix(message.guild.id);
-    const prefix = savedPrefix || default_prefix;
+    const prefix = savedPrefix || defaultPrefix;
 
-    // Verifica se a mensagem começa com o prefixo
     if (!message.content.startsWith(prefix)) return;
 
-    // Separa o comando e os argumentos
     const args = message.content.slice(prefix.length).trim().split(/ +/);
     const commandName = args.shift().toLowerCase();
 
-    // Procura o comando no cliente
     const command = client.commands.get(commandName) ||
       client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
-    // Loga o comando executado no terminal / Não recomendo se for usar para projetos reais
-    /*     console.table({
-          Command: commandName,
-          Date: new Date().toLocaleString(),
-          Author: message.author.tag,
-          AuthorID: message.author.id,
-          Guild: message.guild.name
-        }) */
-
     if (command) {
-      // Calcula o tempo de cooldown do comando
-      const cooldownTime = (command.cooldown || 5) * 1000;
-      const remainingTime = isInCooldown(command.name, message.author.id, cooldownTime);
+      // Verifica se o cooldown global está ativado
+      if (isGlobalCooldownEnabled()) {
+        // Limite de uso de comando (intervalo de 2 minuto e limite de 5 vezes)
+        const usageLimit = 5;
+        const timeInterval = 120000;
 
-      // Verifica se o usuário ainda está em cooldown
-      if (remainingTime) {
-        const embed = new EmbedBuilder()
-          .setTitle('⚠️ Cooldown Ativo')
-          .setColor(ErrorEmbedColor)
-          .setDescription(`Por favor, aguarde **${remainingTime} segundos** antes de usar o comando \`${commandName}\` novamente.`)
-          .setThumbnail(client.user.displayAvatarURL({ dynamic: true }))
-          .setFooter({ text: `${message.guild.name}`, iconURL: message.guild.iconURL({ dynamic: true }) })
-          .setTimestamp();
+        // Verifica se o limite de uso de comando foi excedido
+        if (isCommandUsageExceeded(command.name, message.author.id, usageLimit, timeInterval)) {
+          return this.sendUsageLimitError(message, commandName, usageLimit, timeInterval, client);
+        }
 
-        return message.channel.send({ embeds: [embed] });
+        // Calcula o tempo de cooldown específico para o comando
+        const cooldownTime = (command.cooldown || 1) * 5000; // Defina o tempo de cooldown
+        const remainingTime = isInCooldown(command.name, message.author.id, cooldownTime);
+
+        if (remainingTime) {
+          return this.sendCooldownError(message, commandName, remainingTime, client);
+        }
+
+        // Se o cooldown não foi atingido, define o cooldown para o usuário
+        setCooldown(command.name, message.author.id, cooldownTime);
       }
 
-      // Define o cooldown para o usuário
-      setCooldown(command.name, message.author.id, cooldownTime);
-
-      // Executa o comando
-      try {
-        await command.run(client, message, args);
-      } catch (Error) {
-        console.error('Erro ao executar comando:', Error);
-
-        const embed = new EmbedBuilder()
-          .setAuthor({ name: message.author.tag, iconURL: message.author.displayAvatarURL({ dynamic: true }) })
-          .setTitle('Ocorreu um erro ao executar este comando! 🛑')
-          .setColor(ErrorEmbedColor)
-          .setDescription(`*__Motivo:__* \`\`\`diff\n- ${Error.toString()}\`\`\`*Por Favor, **Tente Novamente.***
-            __\nSe o problema persistir, denuncie-o com:__ \`\`\`Bash\n'${default_prefix}reportbug [Nome do Comando e Erro]'\`\`\`***Obrigado e desculpe pelo transtorno.***`)
-          .setThumbnail("https://media.stickerswiki.app/mrincrediblememe/1102632.512.webp")
-          .setFooter({ text: `${message.guild.name}`, iconURL: message.guild.iconURL({ dynamic: true }) })
-          .setTimestamp();
-
-        return message.channel.send({ embeds: [embed] });
-      }
+      // Agora, executa o comando normalmente
+      return this.executeCommand(client, message, command, args);
     }
+  },
+
+  // Função para executar o comando
+  async executeCommand(client, message, command, args) {
+    try {
+      await command.run(client, message, args);
+    } catch (Error) {
+      console.error('Erro ao executar comando:', Error);
+      return this.sendErrorEmbed(message, Error, client);
+    }
+  },
+
+  // Função para enviar o erro de cooldown
+  sendCooldownError(message, commandName, remainingTime, client) {
+    const embed = new EmbedBuilder()
+      .setTitle('⚠️ Cooldown Ativo')
+      .setColor(errorEmbedColor)
+      .setDescription(`Por favor, aguarde **${remainingTime} segundos** antes de usar o comando \`${commandName}\` novamente.`)
+      .setThumbnail(client.user.displayAvatarURL({ dynamic: true }))
+      .setFooter({ text: `${message.guild.name}`, iconURL: message.guild.iconURL({ dynamic: true }) })
+      .setTimestamp();
+
+    return message.channel.send({ embeds: [embed] });
+  },
+
+  // Função para enviar o erro de limite de uso de comando
+  sendUsageLimitError(message, commandName, usageLimit, timeInterval, client) {
+    const embed = new EmbedBuilder()
+      .setTitle('⚠️ Limite de Uso Excedido')
+      .setColor(errorEmbedColor)
+      .setDescription(`Você já usou o comando \`${commandName}\` **${usageLimit} vezes** nos últimos **${timeInterval / 1000} segundos**.\nPor favor, aguarde antes de tentar novamente.`)
+      .setThumbnail(client.user.displayAvatarURL({ dynamic: true }))
+      .setFooter({ text: `${message.guild.name}`, iconURL: message.guild.iconURL({ dynamic: true }) })
+      .setTimestamp();
+
+    return message.channel.send({ embeds: [embed] });
+  },
+
+  // Função para enviar o erro de execução
+  sendErrorEmbed(message, Error, client) {
+    const embed = new EmbedBuilder()
+      .setAuthor({ name: message.author.tag, iconURL: message.author.displayAvatarURL({ dynamic: true }) })
+      .setTitle('Ocorreu um erro ao executar este comando! 🛑')
+      .setColor(errorEmbedColor)
+      .setDescription(`*__Motivo:__* \`\`\`diff\n- ${Error.toString()}\`\`\`*Por Favor, **Tente Novamente.***\n__Se o problema persistir, denuncie-o com:__ \`\`\`Bash\n'${defaultPrefix}reportbug'\`\`\`***Obrigado e desculpe pelo transtorno.***`)
+      .setThumbnail("https://media.stickerswiki.app/mrincrediblememe/1102632.512.webp")
+      .setFooter({ text: `${message.guild.name}`, iconURL: message.guild.iconURL({ dynamic: true }) })
+      .setTimestamp();
+
+    return message.channel.send({ embeds: [embed] });
   }
-}
+};

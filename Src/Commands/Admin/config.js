@@ -1,9 +1,8 @@
 /**
  * @author ricardo-as1
- * @instagram https://www.instagram.com/kingzin.021/
- * @github https://github.com/ricardo-as1
- * @repository https://github.com/ricardo-as1/Hyouka.git
- * @server_support https://discord.gg/HKkHaqPNac
+ * @github https://github.com/ricardo-as1/Hyouka.git
+ * @support https://discord.gg/5MWurPkP6S
+ * @see https://github.com/ricardo-as1/Hyouka/blob/HyoukaDefaultBranch/Src/Commands/Admin/config.js
  */
 
 /**
@@ -11,31 +10,41 @@
  * @type {import("../../Base/BaseCommands.js")}
  */
 
-const { EmbedBuilder } = require('discord.js');
-const { DefaultEmbedColor } = require('../../Config/Colors.js');
+const { EmbedBuilder, PermissionFlagsBits } = require('discord.js');
+const { Sync: { defaultPrefix }, Colors: { defaultEmbedColor } } = require('../../ConfigHub/System.js');
 
 module.exports = {
   name: "config",
   description: "Exibe informações de configuração do bot e permite alterar o prefixo.",
   category: "Admin",
-  usage: "h!config",
-  cooldown: 10,
-  permission: ["ADMINISTRATOR"],
+  usage: `${defaultPrefix}config`,
+  permission: ["Administrator"],
 
   async run(client, message) {
     const guildIconURL = message.guild.iconURL({ dynamic: true }) || client.user.displayAvatarURL();
 
-    const embed = new EmbedBuilder()
-      .setAuthor({ name: "Hyouka - Configuração", iconURL: client.user.displayAvatarURL() })
-      .addFields({
-        name: "<:Lootbox:1273392541319827469> Alterar Prefixo:",
-        value: "\`h!prefix <prefixo>\` **- Altera o prefixo do bot.**",
-        inline: false
-      })
-      .setColor(DefaultEmbedColor)
-      .setFooter({ text: `${message.guild.name}`, iconURL: guildIconURL })
-      .setTimestamp()
+    if (!message.member.permissions.has(PermissionFlagsBits.Administrator)) {
+      const noPermissionEmbed = new EmbedBuilder()
+        .setTitle(`<:CheckIncorrect:1272975727821590561> **${message.author.username}**`)
+        .setColor(errorEmbedColor)
+        .setDescription(`**<:CheckIncorrect:1272975727821590561> Vocês precisa ser Administrador para usar este comando!**`)
+        .setFooter({ text: `${message.guild.name}`, iconURL: message.guild.iconURL({ dynamic: true }) })
+        .setTimestamp();
 
-    message.channel.send({ embeds: [embed] });
+      return message.reply({ embeds: [noPermissionEmbed] });
+    } else {
+      const embed = new EmbedBuilder()
+        .setAuthor({ name: "Hyouka - Configuração", iconURL: client.user.displayAvatarURL() })
+        .addFields({
+          name: "<:Lootbox:1273392541319827469> Alterar Prefixo:",
+          value: "\`h!prefix <prefixo>\` **- Altera o prefixo do bot.**",
+          inline: false
+        })
+        .setColor(defaultEmbedColor)
+        .setFooter({ text: `${message.guild.name}`, iconURL: guildIconURL })
+        .setTimestamp()
+
+      message.channel.send({ embeds: [embed] });
+    }
   }
 };

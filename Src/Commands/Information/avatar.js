@@ -1,9 +1,8 @@
 /**
  * @author ricardo-as1
- * @instagram https://www.instagram.com/kingzin.021/
- * @github https://github.com/ricardo-as1
- * @repository https://github.com/ricardo-as1/Hyouka.git
- * @server_support https://discord.gg/HKkHaqPNac
+ * @github https://github.com/ricardo-as1/Hyouka.git
+ * @support https://discord.gg/5MWurPkP6S
+ * @see https://github.com/ricardo-as1/Hyouka/blob/HyoukaDefaultBranch/Src/Commands/Fun/avatar.js
  */
 
 /**
@@ -12,14 +11,13 @@
  */
 
 const { EmbedBuilder } = require("discord.js");
-const { DefaultEmbedColor } = require("../../Config/Colors.js");
+const { Sync: { defaultPrefix }, Colors: { defaultEmbedColor } } = require("../../ConfigHub/System.js");
 
 module.exports = {
   name: "avatar",
   description: "Mostra informações de avatar dos usuários.",
   category: "Global",
-  usage: "h!avatar [@user]",
-  cooldown: 10,
+  usage: `${defaultPrefix}avatar [@user]`,
   aliases: ["av"],
 
   async run(client, message) {
@@ -36,8 +34,8 @@ module.exports = {
 
     const embed = new EmbedBuilder()
       .setTitle(`Avatar de ${user.username}`)
-      .setColor(DefaultEmbedColor)
-      .setImage(avatarURLs[2])  // Padrão de 256
+      .setColor(defaultEmbedColor)
+      .setImage(avatarURLs[4])  // Padrão de 1024
       .setDescription(description)
       .setFooter({ text: `${message.guild.name}`, iconURL: guildIconURL })
       .setTimestamp();

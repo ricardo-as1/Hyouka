@@ -1,5 +1,5 @@
 /**
- * @typedef {Object} CommandData
+ * @typedef {Object} CommandData // Placeholder para os dados do comando
  * @property {string} name - O nome do comando (deve estar em letras minúsculas)
  * @property {string} description - Uma breve descrição do comando
  * @property {string[]} aliases - Aliases do comando
@@ -17,6 +17,12 @@
  * @param {Array<string>} args - Argumentos passados para o comando
  */
 
+/** 
+ * Como importar essa base dentro dos novos comandos: 
+ * const { CommandData } = require('../../Base/BaseCommands');
+ * Detalhe importante: A base tem que ser importada primeiro, pois ela contém o CommandData
+ * O que é CommandData: é uma tipagem para os dados do comando.
+**/
 
 /**
  * @author ricardo-as1
@@ -27,18 +33,17 @@
  */
 
 /**
- * Placeholder para os dados do comando
- * @type {CommandData}
+ * Placeholder command
+ * @type {import("../../Base/BaseCommands.js")}
  */
 
 module.exports = {
-  name: "",
-  description: "",
-  category: "",
-  usage: "",
-  cooldown: 10,
+  name: '',
+  description: '',
+  category: '',
+  usage: '',
   aliases: [''],
-  permission: [],
+  permission: [''],
 
   async run(client, message, args) {
 

@@ -1,9 +1,8 @@
 /**
  * @author ricardo-as1
- * @instagram https://www.instagram.com/kingzin.021/
- * @github https://github.com/ricardo-as1
- * @repository https://github.com/ricardo-as1/Hyouka.git
- * @server_support https://discord.gg/HKkHaqPNac
+ * @github https://github.com/ricardo-as1/Hyouka.git
+ * @support https://discord.gg/5MWurPkP6S
+ * @see https://github.com/ricardo-as1/Hyouka/blob/HyoukaDefaultBranch/Src/Commands/Moderation/kick.js
  */
 
 /**
@@ -11,30 +10,28 @@
  * @type {import("../../Base/BaseCommands.js")}
  */
 
-const { WarningEmbedColor, ErrorEmbedColor, DefaultEmbedColor } = require('../../Config/Colors.js');
-const { EmbedBuilder } = require('discord.js');
+const { EmbedBuilder, PermissionFlagsBits } = require('discord.js');
+const { Sync: { defaultPrefix }, Colors: { defaultEmbedColor, errorEmbedColor, warningEmbedColor }, Logs: { kickChannel } } = require('../../ConfigHub/System.js');
 
 module.exports = {
   name: "kick",
   description: "Kick a user from the server.",
   category: "Moderation",
-  usage: "h!kick <user> [reason]",
-  cooldown: 10,
+  usage: `${defaultPrefix}kick <user> [reason]`,
   aliases: ['expulsar'],
-  permission: ["KICK_MEMBERS"],
+  permission: ["KickMembers"],
 
   async run(client, message, args) {
-    const logChannel = message.guild.channels.cache.get('1282512649791209482'); // Atualize para o nome ou ID correto do canal
 
-    if (!message.member.permissions.has("KICK_MEMBERS")) {
-      const KingNoPerm = new EmbedBuilder()
-        .setAuthor({ name: "Hyouka - Permissão Negada", iconURL: client.user.displayAvatarURL() })
-        .setDescription(`<:CheckIncorrect:1272975727821590561> Você precisa da permissão \`Kick Members\` para executar este comando!`)
-        .setColor(ErrorEmbedColor)
-        .setFooter({ text: `${message.guild.name}`, iconURL: message.guild.iconURL() })
-        .setTimestamp();
-        
-      return message.reply({ embeds: [KingNoPerm] });
+    if (!message.member.permissions.has(PermissionFlagsBits.KickMembers)) {
+      const embed = new EmbedBuilder()
+      .setAuthor({ name: "Hyouka - Erro", iconURL: client.user.displayAvatarURL() })
+        .setDescription(`**<:CheckIncorrect:1272975727821590561> Vocês precisa ser Moderador para usar este comando!**`)
+        .setColor(errorEmbedColor)
+        .setFooter({ text: `${message.guild.name}`, iconURL: guildIconURL })
+        .setTimestamp()
+
+      return message.channel.send({ embeds: [embed] });
     }
 
     const user = message.mentions.members.first();
@@ -44,7 +41,7 @@ module.exports = {
       const KingNoUser = new EmbedBuilder()
         .setAuthor({ name: "Hyouka - Erro", iconURL: client.user.displayAvatarURL() })
         .setDescription(`<:CheckIncorrect:1272975727821590561> Por favor mencione um membro!`)
-        .setColor(ErrorEmbedColor)
+        .setColorer(errorEmbedColor)
         .setFooter({ text: `${message.guild.name}`, iconURL: message.guild.iconURL() })
         .setTimestamp();
       return message.reply({ embeds: [KingNoUser] });
@@ -54,7 +51,7 @@ module.exports = {
       const KingNoSelf = new EmbedBuilder()
         .setAuthor({ name: "Hyouka - Erro", iconURL: client.user.displayAvatarURL() })
         .setDescription(`<:CheckIncorrect:1272975727821590561> Você não pode expulsar a si mesmo!`)
-        .setColor(ErrorEmbedColor)
+        .setColor(errorEmbedColor)
         .setFooter({ text: `${message.guild.name}`, iconURL: message.guild.iconURL() })
         .setTimestamp();
       return message.reply({ embeds: [KingNoSelf] });
@@ -64,7 +61,7 @@ module.exports = {
       const KingNoSelf = new EmbedBuilder()
         .setAuthor({ name: "Hyouka - Erro", iconURL: client.user.displayAvatarURL() })
         .setDescription(`<:CheckIncorrect:1272975727821590561> Eu não posso expulsar a mim mesmo!`)
-        .setColor(ErrorEmbedColor)
+        .setColor(errorEmbedColor)
         .setFooter({ text: `${message.guild.name}`, iconURL: message.guild.iconURL() })
         .setTimestamp();
       return message.reply({ embeds: [KingNoSelf] });
@@ -74,7 +71,7 @@ module.exports = {
       const KingNoOwner = new EmbedBuilder()
         .setAuthor({ name: "Hyouka - Erro", iconURL: client.user.displayAvatarURL() })
         .setDescription(`<:CheckIncorrect:1272975727821590561> Não posso expulsar o dono do servidor!`)
-        .setColor(ErrorEmbedColor)
+        .setColor(errorEmbedColor)
         .setFooter({ text: `${message.guild.name}`, iconURL: message.guild.iconURL() })
         .setTimestamp();
       return message.reply({ embeds: [KingNoOwner] });
@@ -84,7 +81,7 @@ module.exports = {
       const KingNoKick = new EmbedBuilder()
         .setAuthor({ name: "Hyouka - Erro", iconURL: client.user.displayAvatarURL() })
         .setDescription(`<:CheckIncorrect:1272975727821590561> Não posso expulsar este membro!`)
-        .setColor(ErrorEmbedColor)
+        .setColor(errorEmbedColor)
         .setFooter({ text: `${message.guild.name}`, iconURL: message.guild.iconURL() })
         .setTimestamp();
       return message.reply({ embeds: [KingNoKick] });
@@ -97,7 +94,7 @@ module.exports = {
         **ID:** ${user.id}
         **Moderador:** ${message.author}
         **Motivo:** ${reason}`)
-      .setColor(DefaultEmbedColor)
+      .setColor(defaultEmbedColor)
       .setFooter({ text: `${message.guild.name}`, iconURL: message.guild.iconURL() })
       .setTimestamp();
 
@@ -107,8 +104,8 @@ module.exports = {
       });
       await user.kick(reason);
 
-      if (logChannel) {
-        await logChannel.send({ embeds: [KingKick] });
+      if (kickChannel) {
+        await kickChannel.send({ embeds: [KingKick] });
       }
 
       return message.reply({ embeds: [KingKick] });
@@ -117,7 +114,7 @@ module.exports = {
       const KingError = new EmbedBuilder()
         .setAuthor({ name: "Hyouka - Warning", iconURL: client.user.displayAvatarURL() })
         .setDescription(`<:Attention:1272975741557936209> Houve um erro ao tentar expulsar o usuário.\n**Motivo:** ${error.message}`)
-        .setColor(WarningEmbedColor)
+        .setColor(warningEmbedColor)
         .setFooter({ text: `${message.guild.name}`, iconURL: message.guild.iconURL() })
         .setTimestamp();
       console.error(error);
