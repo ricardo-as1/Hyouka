@@ -15,6 +15,7 @@ const fs = require('fs');
  * Função para carregar eventos no cliente do Discord.
  * @param {Object} client - O cliente do Discord.
  */
+
 const loadEvents = (client) => {
   // Verifica se os eventos já foram carregados para evitar duplicação
   if (client.eventsLoaded) return;
@@ -51,6 +52,8 @@ const loadEvents = (client) => {
 
     // Verifica se o evento possui um nome e uma função execute válida
     if (event.name && typeof event.execute === 'function') {
+      client.on(event.name, (...args) => event.execute(...args, client));
+    } else {
       const eventHandler = (...args) => event.execute(...args, client);
 
       if (event.once) {

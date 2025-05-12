@@ -5,8 +5,7 @@
  * @see https://github.com/ricardo-as1/Hyouka/blob/HyoukaDefaultBranch/Src/Events/Ready.js
  */
 
-const { ChalkColors: { ChalkBlue } } = require("../ConfigHub/System.js");
-const { Sync: { defaultPrefix } } = require("../ConfigHub/System.js");
+const { Sync: { defaultPrefix }, ChalkColors: { ChalkBlue } } = require("../ConfigHub/System.js");
 
 const { notifyDatabaseStatus } = require('../Database/DataBase.js');
 const { ActivityType } = require("discord.js");
@@ -87,8 +86,6 @@ module.exports = {
       `${chalk.hex(ChalkBlue).underline.italic("Uptime")} ${chalk.white.italic(uptime + 's')}`
     );
     console.groupEnd();
-
-    console.log('');
 
     console.log(chalk.hex(ChalkBlue)("═".repeat(process.stdout.columns)));
 

@@ -13,6 +13,7 @@
 
 const { EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { Sync: { defaultPrefix }, Colors: { defaultEmbedColor } } = require('../../ConfigHub/System.js');
+
 const path = require('path');
 const fs = require('fs');
 
@@ -52,7 +53,7 @@ module.exports = {
     const menuRow = new ActionRowBuilder().addComponents(
       new StringSelectMenuBuilder()
         .setCustomId("help-menu")
-        .setPlaceholder("📂 Veja aqui meu repertorio de comandos!")
+        .setPlaceholder("📂 Veja aqui meu repertório de comandos!")
         .addOptions(options)
     );
 
@@ -79,9 +80,9 @@ const createBotInfoEmbed = (client, user, prefix) => {
       `> **Posso ajudá-lo a construir um Super servidor e a torná-lo mais divertido.**\n\n` +
       `<a:Load:1273063236354179072> **BOT INFO**\n` +
       `> <:Developer:1273392334956007477> Prefix: \`${prefix}\`\n` +
-      `> <:djs:1274733473109639290> Discord.js Version: \`${require("discord.js").version}\`\n` +
+      `> <:djs:1274733473109639290> Discord.js: \`${require("discord.js").version}\`\n` +
       `> <:Nodejs:1277804898863546389> Running On: \`${process.version}\`\n` +
-      `> <:IconCrown:1272932786931765298> Criado por: [@ricardo-as1](https://github.com/ricardo-as1)`
+      `> <:IconCrown:1272932786931765298> Created by: [@ricardo-as1](https://github.com/ricardo-as1)`
     )
     .setImage("https://share.creavite.co/66cd2dcbce0e5d041d7b5f6e.gif")
     .addFields([
@@ -106,7 +107,7 @@ const createBotInfoEmbed = (client, user, prefix) => {
         inline: true,
       },
     ])
-    .setFooter({ text: user.guild ? user.guild.name : "Mensagem Direta", iconURL: guildIconURL })
+    .setFooter({ text: user.guild ? user.guild.name : client.user.username, iconURL: guildIconURL })
     .setTimestamp();
 };
 
@@ -167,8 +168,7 @@ const waiter = (msg, userId, commands, prefix) => {
       const menuRow = new ActionRowBuilder().addComponents(
         new StringSelectMenuBuilder()
           .setCustomId("help-menu")
-          .setEmoji("<:8319folder:1282495585253068800>")
-          .setPlaceholder("Veja aqui meu repertorio de comandos!")
+          .setPlaceholder("📂 Veja aqui meu repertório de comandos!")
           .addOptions(
             Object.keys(commands).map(category => ({
               label: category,
@@ -208,8 +208,7 @@ const waiter = (msg, userId, commands, prefix) => {
       const menuRow = new ActionRowBuilder().addComponents(
         new StringSelectMenuBuilder()
           .setCustomId("help-menu")
-          .setEmoji("<:8319folder:1282495585253068800>")
-          .setPlaceholder("Veja aqui meu repertorio de comandos!")
+          .setPlaceholder("📂 Veja aqui meu repertório de comandos!")
           .addOptions(
             Object.keys(commands).map(category => ({
               label: category,

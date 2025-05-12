@@ -2,7 +2,7 @@
  * @author ricardo-as1
  * @github https://github.com/ricardo-as1/Hyouka.git
  * @support https://discord.gg/5MWurPkP6S
- * @see https://github.com/ricardo-as1/Hyouka/blob/HyoukaDefaultBranch/Src/Commands/Moderation/nuke.js
+ * @see https://github.com/ricardo-as1/Hyouka/blob/HyoukaDefaultBranch/Src/Commands/Admin/nuke.js
  */
 
 /**

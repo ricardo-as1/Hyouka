@@ -6,12 +6,12 @@
  */
 
 /**
- * Comando para remover o banimento de um usuário.
+ * Placeholder command
  * @type {import("../../Base/BaseCommands.js")}
  */
 
 const { EmbedBuilder, PermissionFlagsBits } = require('discord.js');
-const { Sync: { defaultPrefix }, Colors: { defaultEmbedColor, errorEmbedColor }, Logs: { unbanChannel } } = require('../../ConfigHub/System.js');
+const { Sync: { defaultPrefix }, Colors: { defaultEmbedColor, errorEmbedColor }, GuildSettings: { guildIconURL } } = require('../../ConfigHub/System.js');
 
 module.exports = {
   name: "unban",

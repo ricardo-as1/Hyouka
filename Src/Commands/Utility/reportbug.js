@@ -5,8 +5,13 @@
  * @see https://github.com/ricardo-as1/Hyouka/blob/HyoukaDefaultBranch/Src/Commands/Information/reportbug.js
  */
 
+/**
+ * Placeholder command
+ * @type {import("../../Base/BaseCommands.js")}
+ */
+
 const { EmbedBuilder } = require("discord.js");
-const { Sync: { defaultPrefix }, Logs: { reportbugChannel }, Colors: { warningEmbedColor, defaultEmbedColor } } = require("../../ConfigHub/System.js");
+const { Sync: { defaultPrefix }, Colors: { warningEmbedColor, defaultEmbedColor }, GuildSettings: { Logs: { reportbugChannel } } } = require("../../ConfigHub/System.js");
 
 module.exports = {
   name: "reportbug",
@@ -15,8 +20,7 @@ module.exports = {
   usage: `${defaultPrefix}reportbug`,
   permission: [],
 
-  run: async (client, message, args) => {
-    // 1. Solicitar o nome do comando onde o bug ocorreu
+  async run(client, message) {
     const askCommandName = new EmbedBuilder()
       .setTitle("🚨 Reporte de Bug")
       .setDescription("Por favor, informe o **nome do comando** onde ocorreu o bug.")
@@ -32,12 +36,10 @@ module.exports = {
     collector.on('collect', async userMessage => {
       const commandName = userMessage.content;
 
-      // Se o nome do comando for vazio, informe o erro
       if (!commandName) {
         return message.reply("⚠️ Você precisa fornecer o nome do comando.");
       }
 
-      // 2. Após coletar o nome do comando, solicitar o erro específico
       const askBugReport = new EmbedBuilder()
         .setTitle("🛠️ Reporte de Bug")
         .setDescription("Agora, por favor, informe o **erro que ocorreu** (detalhe o erro).")
@@ -47,7 +49,6 @@ module.exports = {
 
       await message.reply({ embeds: [askBugReport] });
 
-      // Coletar a mensagem do erro
       const responseCollector = message.channel.createMessageCollector({
         filter: m => m.author.id === message.author.id,
         time: 60000
@@ -56,7 +57,6 @@ module.exports = {
       responseCollector.on('collect', async userErrorMessage => {
         const bugReport = userErrorMessage.content || "Nenhum erro especificado.";
 
-        // 3. Criar o embed com as informações coletadas
         const embed = new EmbedBuilder()
           .setTitle("🛠️ Bug!")
           .setDescription("Obrigado por ajudar a melhorar o bot!")
@@ -72,10 +72,8 @@ module.exports = {
           })
           .setTimestamp();
 
-        // Enviar a resposta ao usuário
         await message.reply({ embeds: [embed] });
 
-        // Enviar o report para o canal configurado
         const reportChannel = client.channels.cache.get(reportbugChannel);
         if (reportChannel) {
           reportChannel.send({ embeds: [embed] }).catch(console.error);
@@ -83,12 +81,10 @@ module.exports = {
           message.reply("⚠️ O canal de report de bugs não foi encontrado.");
         }
 
-        // Limpar a mensagem do erro
         userErrorMessage.delete().catch(() => { });
         responseCollector.stop();
       });
 
-      // Para garantir que o comando de nome foi fornecido corretamente
       collector.stop();
     });
   }

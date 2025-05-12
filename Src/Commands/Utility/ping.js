@@ -5,6 +5,11 @@
  * @see https://github.com/ricardo-as1/Hyouka/blob/HyoukaDefaultBranch/Src/Commands/Information/ping.js
  */
 
+/**
+ * Placeholder command
+ * @type {import("../../Base/BaseCommands.js")}
+ */
+
 const { ActionRowBuilder, ButtonBuilder, EmbedBuilder } = require('discord.js');
 const { Sync: { defaultPrefix }, Colors: { defaultEmbedColor } } = require('../../ConfigHub/System.js');
 

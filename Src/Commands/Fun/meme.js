@@ -5,6 +5,11 @@
  * @see https://github.com/ricardo-as1/Hyouka/blob/HyoukaDefaultBranch/Src/Commands/Fun/meme.js
  */
 
+/**
+ * Placeholder command
+ * @type {import("../../Base/BaseCommands.js")}
+ */
+
 const { EmbedBuilder } = require('discord.js');
 const { Sync: { defaultPrefix }, Colors: { defaultEmbedColor } } = require('../../ConfigHub/System.js');
 

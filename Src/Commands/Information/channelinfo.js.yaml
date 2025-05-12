@@ -11,7 +11,7 @@
  */
 
 const { EmbedBuilder, ChannelType } = require('discord.js');
-const { Sync: { defaultPrefix }, Colors: { sucessEmbedColor, errorEmbedColor } } = require("../../ConfigHub/System.js");
+const { Sync: { defaultPrefix }, Colors: { successEmbedColor, errorEmbedColor } } = require("../../ConfigHub/System.js");
 
 module.exports = {
   name: "channelinfo",
@@ -55,7 +55,7 @@ module.exports = {
     const channelInfoEmbed = new EmbedBuilder()
       .setAuthor({ name: `INFORMAÇÕES DO CANAL`, iconURL: message.guild.iconURL({ dynamic: true }) })
       .setTitle(`Detalhes do Canal: <#${channel.id}>`)
-      .setColor(sucessEmbedColor)
+      .setColor(successEmbedColor)
       .addFields(
         { name: '<:ChannelID:1273393744930608128> ID', value: `\`${channel.id}\``, inline: true },
         { name: '<:ChannelType:1311037744356659221> Tipo', value: `\`${channelType}\``, inline: true },

@@ -11,7 +11,7 @@
  */
 
 const { EmbedBuilder, PermissionFlagsBits } = require('discord.js');
-const { Sync: { defaultPrefix }, Colors: { defaultEmbedColor, errorEmbedColor, warningEmbedColor }, Logs: { kickChannel } } = require('../../ConfigHub/System.js');
+const { Sync: { defaultPrefix }, Colors: { defaultEmbedColor, errorEmbedColor, warningEmbedColor }, GuildSettings: { Logs: { kickChannel } } } = require('../../ConfigHub/System.js');
 
 module.exports = {
   name: "kick",

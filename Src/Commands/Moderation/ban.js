@@ -6,12 +6,12 @@
  */
 
 /**
- * Comando para banir um usuário do servidor.
+ * Placeholder command
  * @type {import("../../Base/BaseCommands.js")}
  */
 
 const { EmbedBuilder, PermissionFlagsBits } = require('discord.js');
-const { Sync: { defaultPrefix }, Colors: { defaultEmbedColor, errorEmbedColor, warningEmbedColor }, Logs: { banChannel } } = require('../../ConfigHub/System.js');
+const { Sync: { defaultPrefix }, Colors: { defaultEmbedColor, errorEmbedColor, warningEmbedColor }, GuildSettings: { Logs: { banChannel } } } = require('../../ConfigHub/System.js');
 
 module.exports = {
   name: "ban",
@@ -23,6 +23,9 @@ module.exports = {
 
   async run(client, message, args) {
     // Verificar se o membro tem permissão de BAN_MEMBERS
+    
+    const guildIconURL = message.guild.iconURL({ dynamic: true }) || client.user.displayAvatarURL();
+
     if (!message.member.permissions.has(PermissionFlagsBits.BanMembers)) {
       const embed = new EmbedBuilder()
       .setAuthor({ name: "Hyouka - Erro", iconURL: client.user.displayAvatarURL() })
