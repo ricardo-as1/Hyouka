@@ -6,11 +6,15 @@
  */
 
 const Discord = require("discord.js");
-const client = new Discord.Client({ intents: [
+const client = new Discord.Client({ 
+  intents: [
     Discord.GatewayIntentBits.Guilds,
     Discord.GatewayIntentBits.GuildMessages,
-    Discord.GatewayIntentBits.MessageContent ]});
-    
+    Discord.GatewayIntentBits.MessageContent
+  ]
+});
+
+// Carregar eventos, comandos e tratar mensagens
 const loadEvents = require("./Events/LoadEvents.js");
 const loadCommands = require("./Events/LoadCommands.js");
 const handleMessage = require("./Events/handleMessage.js");
@@ -24,7 +28,7 @@ process.on('unhandledRejection', (reason, promise) => {
   console.error('⭕・Promisse rejeitada:', promise, '🔴・Razão:', reason);
 });
 
-// Carregamento de eventos, comandos e faz o login do bot
+// Carregar eventos, comandos e login do bot
 loadEvents(client);
 loadCommands(client);
 handleMessage(client);

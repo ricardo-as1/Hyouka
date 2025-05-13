@@ -6,8 +6,7 @@
  */
 
 const { Sync: { defaultPrefix }, ChalkColors: { ChalkBlue } } = require("../ConfigHub/System.js");
-
-const { notifyDatabaseStatus } = require('../Database/DataBase.js');
+const { notifyDatabaseStatus } = require("../Database/DataBase.js");
 const { ActivityType } = require("discord.js");
 const chalk = require("chalk");
 
@@ -16,78 +15,61 @@ module.exports = {
   once: true,
 
   async execute(client) {
-    // Atividades do bot
+    // Alternância de status do bot
     const activities = [
-      {
-        name: `${defaultPrefix}config - Para mudar meu prefixo!`,
-        type: ActivityType.Watching
-      },
-      {
-        name: `musica com meus ${client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0)} filhos 🤪`,
-        type: ActivityType.Listening
-      },
-      {
-        name: `${defaultPrefix}help - Para ver minha lista de comandos!`,
-        type: ActivityType.Playing
-      }
+      { name: `${defaultPrefix}config - Para mudar meu prefixo!`, type: ActivityType.Watching },
+      { name: `musica com meus ${client.guilds.cache.reduce((acc, g) => acc + g.memberCount, 0)} filhos 🤪`, type: ActivityType.Listening },
+      { name: `${defaultPrefix}help - Para ver minha lista de comandos!`, type: ActivityType.Playing }
     ];
 
     let currentActivity = 0;
-
-    function updatePresence() {
+    setInterval(() => {
       client.user.setPresence({
         activities: [activities[currentActivity]],
-        status: 'online'
+        status: "online"
       });
       currentActivity = (currentActivity + 1) % activities.length;
-    }
+    }, 8000);
+    client.user.setPresence({ activities: [activities[0]], status: "online" });
 
-    setInterval(updatePresence, 8000);
-    updatePresence();
-
-    // Logs
-    console.log(chalk.hex(ChalkBlue)("═".repeat(process.stdout.columns)));
-
-    const userCount = client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0);
+    const border = chalk.hex(ChalkBlue)("═".repeat(process.stdout.columns));
+    const userCount = client.guilds.cache.reduce((acc, g) => acc + g.memberCount, 0);
     const serverCount = client.guilds.cache.size;
     const uptime = process.uptime().toFixed(2);
-    const Database = notifyDatabaseStatus(true);
+    const dbStatus = notifyDatabaseStatus(true);
 
-    console.group(chalk.greenBright.bold.italic('✔ Database Status'));
-    console.log(chalk.white.italic("🗃️"), chalk.hex(ChalkBlue).underline.italic(Database));
+    console.log(border);
+
+    // Database
+    console.group(chalk.greenBright.bold.italic("✔ Database Status"));
+    console.log("🗃️ ", chalk.hex(ChalkBlue).underline.italic("Status:"), chalk.white.italic(dbStatus));
     console.groupEnd();
+    console.log("");
 
-    console.log('');
-
-    console.group(chalk.greenBright.bold.italic(`✔ BOT STATUS`));
-    console.log(('🤖 ') + chalk.hex(ChalkBlue).underline.italic("Logado como:"), chalk.white.italic(client.user.tag));
-    console.log(('🆔 ') + chalk.hex(ChalkBlue).underline.italic("Id do bot:"), chalk.white.italic(client.user.id));
-    console.log(('🟢 ') + chalk.hex(ChalkBlue).underline.italic("Atual status:"), chalk.green.italic(client.user.presence.status));
+    // Bot Status
+    console.group(chalk.greenBright.bold.italic("✔ BOT STATUS"));
+    console.log("🤖", chalk.hex(ChalkBlue).underline.italic("Logado como:"), chalk.white.italic(client.user.tag));
+    console.log("🆔", chalk.hex(ChalkBlue).underline.italic("ID do bot:"), chalk.white.italic(client.user.id));
+    console.log("🟢", chalk.hex(ChalkBlue).underline.italic("Status atual:"), chalk.green.italic(client.user.presence.status));
     console.groupEnd();
+    console.log("");
 
-    console.log('');
-
-    console.group(chalk.greenBright.bold.italic('✔ INFORMAÇÕES SOBRE SERVIDORES'));
-    console.log(('🌐 ') + chalk.hex(ChalkBlue).underline.italic("Servidores:"), chalk.white.italic(serverCount));
-    console.log(('👥 ') + chalk.hex(ChalkBlue).underline.italic("Usuários:"), chalk.white.italic(userCount));
+    // Servidores
+    console.group(chalk.greenBright.bold.italic("✔ INFORMAÇÕES SOBRE SERVIDORES"));
+    console.log("🌐", chalk.hex(ChalkBlue).underline.italic("Servidores:"), chalk.white.italic(serverCount));
+    console.log("👥", chalk.hex(ChalkBlue).underline.italic("Usuários:"), chalk.white.italic(userCount));
     console.groupEnd();
+    console.log("");
 
-    console.log('');
-
-    console.group(chalk.greenBright.bold.italic('✔ INFORMAÇÕES DO SISTEMA'));
+    // Sistema e Express
+    console.group(chalk.greenBright.bold.italic("✔ INFORMAÇÕES DO SISTEMA"));
     console.log(
-      "📦",
-      `${chalk.hex(ChalkBlue).underline.italic("Discord.js")} ${chalk.white.italic(require("discord.js").version)}`,
-      "/",
-      "🌍",
-      `${chalk.hex(ChalkBlue).underline.italic("NodeJs")} ${chalk.white.italic(process.versions.node)}`,
-      "/",
-      "⏱️ ",
-      `${chalk.hex(ChalkBlue).underline.italic("Uptime")} ${chalk.white.italic(uptime + 's')}`
+      "📦", chalk.hex(ChalkBlue).underline.italic("Discord.js"), chalk.white.italic(require("discord.js").version),
+      "/", "🌍", chalk.hex(ChalkBlue).underline.italic("Node.js"), chalk.white.italic(process.versions.node),
+      "/", "⏱️ ", chalk.hex(ChalkBlue).underline.italic("Uptime"), chalk.white.italic(`${uptime}s`),
     );
-    console.groupEnd();
 
-    console.log(chalk.hex(ChalkBlue)("═".repeat(process.stdout.columns)));
-
+      console.groupEnd();
+      console.log(border);
   }
 };
