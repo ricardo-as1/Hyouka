@@ -1,6 +1,6 @@
 {
   "name": "hyouka",
-  "version": "0.0.7",
+  "version": "1.0.7-beta.1",
   "license": "AGPL-3.0",
   "author": "ricardo-as1",
   "description": "Hyouka é um bot de Discord versátil e configurável, ideal para servidores que buscam moderação eficiente, diversão garantida e uma variedade de utilidades. Com ferramentas poderosas e flexíveis, Hyouka se adapta às necessidades do seu servidor, proporcionando uma experiência personalizada e envolvente para todos os membros.",
@@ -8,7 +8,7 @@
   "main": "./Src/Hyouka.js",
   "type": "module",
   "private": true,
-  
+
   "engines": {
     "node": ">=16.0.0"
   },
